@@ -2,6 +2,13 @@
 
 The notes are mostly AI generated integrating the content from the slides and the transcript of the lectures, so just be aware. This is still a viable resource for preparing the exam, all chapters are covered, and the notes are quite detailed.
 
+<p align="center">
+<a href="https://github.com/lorenzoorsingher/BIOAI_notes/blob/main/main.pdf"><img src="img/cover.png" width="250"/></a>
+</p>
+<p align="center">
+Click to download notes
+</p>
+
 ## Project Structure
 
 ```
