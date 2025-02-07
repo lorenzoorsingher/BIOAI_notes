@@ -1,0 +1,215 @@
+\textbf{Ant Colony Optimization (ACO) is a swarm intelligence algorithm inspired by the foraging behavior of ants.} It is particularly effective for solving combinatorial problems.  Unlike Particle Swarm Optimization where each particle represents a solution, in ACO, each ant is an agent that constructs a solution iteratively.
+
+\section{Emergent Problem Solving in Ants}
+Ant colonies exhibit remarkable collective problem-solving abilities with no central coordination. The tasks they perform often require cooperation and complex interaction. These tasks include:
+\begin{itemize}
+    \item Regulation of nest temperature: Some ant species can regulate nest temperature within approximately 1 degree Celsius of a desired temperature by closing gaps and vibrating their bodies.
+    \item Forming bridges: Ants use their bodies to create bridges over gaps, allowing other ants to cross.
+    \item Building and protecting the nest: Ants have different roles, with some specialised for protection and others for construction.
+    \item Sorting brood, corpses, garbage and food items: Ants keep their nests tidy and clean by sorting different items.
+    \item Cooperating in carrying large items: Ants can work together to move objects much larger than themselves.
+    \item Emigration of a colony: Ants can decide to move their nest based on conditions like temperature or food scarcity.
+    \item Finding the shortest route from nest to food: Ants are able to find the shortest path between their nest and food sources through a process called stigmergy.
+\end{itemize}
+These are examples of emergent swarm behavior where the collective action of simple agents leads to complex problem solving.
+\subsection*{Stigmergy: Communication Through the Environment}
+\textbf{Stigmergy is a form of communication where individuals interact by modifying their environment.  These modifications are then perceived by other individuals}. In the case of ants, this communication occurs primarily through pheromone trails.
+
+\textbf{Types of Stigmergy}:
+    \begin{itemize}
+        \item \textit{Sematectonic}: Agents modify the environment, and other agents use these changes to exchange information.
+        \item \textit{Sign-based}: Agents use signals (e.g., chemical or auditory) to communicate through the environment.
+    \end{itemize}
+    \textbf{In ant colonies, stigmergy manifests when ants leave pheromone trails. These trails allow other ants to find paths between food and nest. The more ants follow a path, the more pheromone is deposited, reinforcing that path and attracting even more ants.}
+
+\subsection*{Pheromone Trails and Path Optimization}
+When ants explore, they leave pheromone trails, and other ants tend to follow the paths with higher pheromone concentrations.
+\begin{itemize}
+    \item Initially, without pheromones, ants have an equal probability of choosing a long or short path.
+    \item Shorter paths get more traffic, and thus more pheromones, and less decay because of the increased traffic.
+    \item The result is a positive feedback loop where the shortest paths are reinforced through this process.
+    \item This mechanism allows ants to solve graph based problems (like finding the shortest path) in a fully decentralized manner.
+\end{itemize}
+\section{Ant Colony Optimization Algorithm}
+\subsection*{Generalities of ACO}
+\textbf{ACO is an algorithm developed by Dorigo et al. in 1992, inspired by stigmergic communication to find the shortest path in a network.}  The original implementation was called the Ant System (AS). \textbf{Typically, ACO assumes an optimization problem represented as a graph problem}.
+
+\textbf{Common Applications}:
+\begin{itemize}
+    \item Combinatorial problems over networks (e.g., routing)
+    \item Travel Salesman Problem (TSP)
+    \item Vehicle Routing Problem (VRP), including variants with time windows (VRPTW).
+    \item These problems are commonly used in real-world logistics and scheduling by companies such as British Telecom, MCI Worldcom, Barilla, Migros.
+\end{itemize}
+\textbf{Modern ACO algorithms often include hybridizations with other metaheuristics and local search. Extensions also include self-adaptation and solutions to continuous and multi-objective optimization problems.}
+
+\subsection*{Advantages of ACO}
+\begin{itemize}
+    \item \textbf{Dynamic Rerouting}:  ACO can dynamically reroute through the shortest path if a node is damaged or broken.
+    \item \textbf{Rapid Discovery of Solutions}: Positive feedback leads to fast identification of good solutions.
+    \item \textbf{Distributed Computation}: Inherent parallelism with stochasticity avoids premature convergence.
+    \item \textbf{Greedy Heuristic}: Helps find acceptable solutions early in the search.
+    \item \textbf{Collective Interaction}: The interaction of many agents helps solve complex problems.
+\end{itemize}
+\subsection*{Disadvantages of ACO}
+\begin{itemize}
+    \item \textbf{Slower Convergence}: Sometimes slower than other metaheuristics, especially on large problems.
+    \item \textbf{Lack of Central Coordination}: The absence of central coordination can sometimes lead to inefficiencies.
+\end{itemize}
+\subsection*{How ACO Works}
+\begin{itemize}
+\item \textbf{Constructive Nature}:  Ants are stimulus-response agents that stochastically and iteratively construct a solution to a graph problem.
+\item \textbf{Ant Movement}: Each ant moves on a graph, choosing where to go based on pheromone strength and a problem-dependent heuristic (typically, distance).
+\item \textbf{Probabilistic Transition Rule}: Ants use a probabilistic transition rule to favour edges with high pheromone and short distances.
+\item \textbf{Path Memory}: Each ant keeps a "path memory" (tabu moves) to prevent revisiting the same node twice.
+\item \textbf{Candidate Solutions}: The total path of an ant represents a specific candidate solution.
+\item \textbf{Pheromone Deposition}: When an ant completes a solution, it lays pheromone on its path, proportional to the quality of the solution. Shorter paths receive more pheromone.
+\item \textbf{Pheromone Evaporation}: Pheromone levels decrease over time.
+\end{itemize}
+\subsection*{Example: 4-City TSP}
+This example demonstrates a simplified version of ACO applied to the Traveling Salesman Problem.
+\begin{itemize}
+    \item Initialisation:
+        \begin{itemize}
+            \item Random pheromone levels are scattered on edges.
+            \item An ant is placed at a random node.
+        \end{itemize}
+    \item  Ant Movement:
+        \begin{itemize}
+            \item  Ant decides where to go from that node based on probabilities calculated from pheromone strengths and next-hop distances.
+            \item The ant records its path memory to avoid backtracking.
+        \end{itemize}
+\item Completion and Update:
+        \begin{itemize}
+            \item  The ant completes its path, forming a tour.
+            \item Pheromone on the path is increased based on the fitness (total length) of that path.
+             \item Pheromone on all edges is decreased a little to model decay of trail strength over time.
+        \end{itemize}
+    \item The process repeats with another ant in a random position.
+\end{itemize}
+\subsection*{Algorithmic Details: Transition Rule}
+\textbf{At each iteration, each ant incrementally constructs a path (a solution).}
+\begin{itemize}
+\item At each step t, each ant k samples a random number q in.
+    \item If q is smaller than a threshold q\textsubscript{0}, the ant greedily chooses the edge with the largest amount of pheromone $ \tau $ or the shortest length $ \eta$.
+    \item Otherwise, it uses a probabilistic transition rule:
+    $$ p_{ij}^{k}(t) = \frac{[\tau_{ij}(t)]^\alpha [\eta_{ij}]^\beta}{\sum_{l \in N_i^k} [\tau_{il}(t)]^\alpha [\eta_{il}]^\beta} $$
+    where:
+    \begin{itemize}
+       \item $\tau_{ij}(t)$ is the pheromone level on edge i-j at time t.
+        \item $\eta_{ij}$ is the heuristic information of the distance of the edge i-j.
+        \item  $N_i^k$ is the set of nodes that can be visited from node i.
+        \item  $ \alpha $ and $ \beta $ influence the algorithm’s behavior; $\alpha$ controls the importance of the pheromone and $ \beta $ controls the importance of the heuristic information. If $ \alpha = 0$, the decision is based solely on the edge length. If $ \beta = 0$, the decision is based solely on pheromone.
+    \end{itemize}
+    \item Loops are removed once the destination node has been reached (alternatively, ants use path memory).
+\end{itemize}
+\subsection*{Algorithmic Details: Pheromone Update}
+\textbf{Original Ant System (AS) Pheromone Update}:
+$$
+\tau_{ij}(t+1) = (1-\rho)\cdot\tau_{ij}(t) + \sum_{k=1}^{m}\Delta\tau_{ij}^{k}(t)
+$$
+    where:
+     \begin{itemize}
+         \item $ \tau_{ij}(t) $ is the pheromone level of each edge, which decreases linearly with time depending on $ \rho $.
+         \item  $ \rho $ is the pheromone update rate.
+         \item $\Delta\tau_{ij}^{k}(t) = \frac{1}{L_k(t)}$ if ant k uses edge i-j at time t, and 0 otherwise; where $L_k(t)$ is the total length of ant k's path.
+    \end{itemize}
+
+\textbf{Modern ACO Pheromone Update}:
+\begin{itemize}
+    \item \textit{Local Pheromone Update}: The pheromone level of each edge visited by an ant is decreased by a fraction (1-$\rho$) of its current level and increased by a fraction $\rho$ of the initial level $\tau(0)$:
+    $$
+    \tau_{ij}(t+1)=(1-\rho)\cdot\tau_{ij}(t)+\rho\cdot\tau_{ij}(0)
+    $$.
+    \item \textit{Global Pheromone Update}: After all ants complete their paths, the length L of the shortest path is found, and only the pheromone levels of the edges belonging to the shortest path are updated:
+    $$
+        \tau_{ij}(t+1)=(1-\rho)\cdot\tau_{ij}(t)+\rho/L
+        $$.
+\end{itemize}
+
+\section{Applications of Ant Colony Optimization}
+\subsection*{General Applicability}
+\textbf{ACO is naturally applicable to any sequencing problem, or any problem where solutions can be represented as paths in a graph}. This requires some way to represent the solutions as paths on a graph.
+
+\subsection*{Example: Shortest Path}
+Consider finding the shortest path between two nodes:
+\begin{itemize}
+    \item Algorithm Parameterization:
+    \begin{itemize}
+        \item  m ants (e.g. m = 100) are generated and distributed on random nodes.
+        \item  The initial pheromone level is the same for all edges and is inversely proportional to the number of nodes in the graph (n) times the estimated length (L*) of the optimal path: $\tau(0) = \frac{1}{n \cdot L^*}$.
+    \end{itemize}
+     \item Typical parameter settings include:
+    \begin{itemize}
+        \item Relative importance of pheromone and edge length: $\alpha = 1$ and $\beta = 2$.
+        \item Exploration threshold: $q_0= 0.9$.
+        \item Pheromone update rate: $\rho = 0.1$.
+    \end{itemize}
+\end{itemize}
+\subsection*{Example: Single Machine Scheduling with Due Dates}
+A number of jobs must be completed, each with a specific due date and processing time. The goal is to minimize some measure of lateness.
+\begin{itemize}
+    \item Each job is considered as a node in a graph.
+    \item Ants find paths representing sequences of jobs.
+    \item No need to return to a starting node; the path is complete when every node is visited.
+    \item An ant starts at a “virtual” start node. The first edge chosen defines the first task to schedule.
+    \item Ants use a transition rule biased by pheromone levels and a heuristic score, each time choosing the next job to schedule.
+    \item Duplicates are avoided using tabu moves.
+    \item The heuristic score for choosing the next job could be the minimization of lateness.
+\end{itemize}
+\subsection*{Other Applications}
+\begin{itemize}
+    \item Drilling wooden boards/iron sheets, where the aim is to minimise time spent drilling holes.
+   \item Capacitated Vehicle Routing Problem with Time Windows and Multiple Trips (CVRPTWMT).
+   \item Neural Architecture Search (using the DEEP-SWARM toolbox).
+\end{itemize}
+\section{Variants of Ant Colony Optimization}
+\subsection*{Ant Colony Systems (ACS)}
+ACS differs from the original Ant System in several aspects:
+\begin{itemize}
+    \item \textbf{Transition Rule}: Biases search towards nodes connected by short links and with a large amount of pheromone, exploiting greedy search.
+    \item \textbf{Pheromone Update}: Only the best ants are allowed to update pheromone concentrations on links of the global-best path.
+    \item \textbf{Local Pheromone Updates}: Uses adaptive pheromone evaporation (adaptive $\rho$).
+     \item \textbf{Candidate Node Lists}: Lists of candidate nodes, sorted by distance, are used to favour specific nodes during solution construction.
+\end{itemize}
+\subsection*{Max-Min AS (MMAS)}
+MMAS also differs from AS in these aspects:
+    \begin{itemize}
+        \item \textbf{Pheromone Update}: Only the best ants update pheromone concentrations on the global-best path.
+        \item \textbf{Pheromone Restriction}: Pheromone intensities are restricted within the interval $[\tau_{min}, \tau_{max}]$.
+        \item \textbf{Initial Pheromone Values}: Initially, pheromones are set to the max allowed value $\tau_{max}$ to promote exploration.
+         \item \textbf{Stagnation Avoidance}: If stagnation is detected, pheromones are reset to $\tau_{max}$.
+         \item \textbf{Pheromone Smoothing}: A pheromone smoothing mechanism is used to reduce differences between high and low pheromone concentrations, promoting exploration.
+    \end{itemize}
+\subsection*{Other Variants}
+\begin{itemize}
+    \item \textbf{Elitist Pheromone Updates}: The best ants add pheromone proportional to their paths' quality to guide search towards good routes.
+    \item \textbf{Fast Ant System (FANT)}: Uses only one ant, with the same transition rule as AS (with $\beta=0$). It uses a different pheromone update rule that does not make use of any evaporation.
+   \item \textbf{Antabu}: Adapts AS to include a local search based on Tabu Search, uses a modified update rule.
+    \item \textbf{AS-Rank}: Differs from AS in pheromone update rules. Only best ants update pheromone on the best path and it uses elitist updates based on a ranking of the ants.
+    \item \textbf{Continuous Ant Colony Optimization (CACO)}: Maps a continuous space problem into a graph search problem.
+        \begin{itemize}
+            \item Performs a bi-level search:
+                \begin{itemize}
+                     \item Local search component to exploit “good” regions.
+                     \item Global search component to explore “bad” regions.
+                \end{itemize}
+            \item Includes local and global search pseudocodes.
+            \item The transition update rule is preserved.
+        \end{itemize}
+     \item \textbf{Multi-Objective Ant Colony Optimization}: Has two main methods:
+            \begin{itemize}
+                 \item Multi-pheromone approach: One pheromone for each objective.
+                 \item Multi-colony approach: One colony for each objective.
+             \end{itemize}
+\end{itemize}
+\section{Concluding Remarks}
+\begin{itemize}
+    \item \textbf{ACO is well-suited for solving hard combinatorial (graph-based) optimization problems}.
+    \item Artificial ants implement a randomized construction heuristic with probabilistic decisions.
+    \item Accumulated search experience is incorporated by adapting a pheromone trail.
+    \item \textbf{ACO shows strong performance on dynamic problems, like network routing}.
+    \item Modern ACO versions include local search (between local and global update).
+    \item State-of-the-art results are found on very large (>100k cities) instances of TSP.
+    \item \textbf{ACO is able to reroute and regenerate dynamically new solutions by using the ants that eventually will reconstruct new solutions that are adapted to new conditions of the environment}
+\end{itemize}

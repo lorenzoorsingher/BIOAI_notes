@@ -1,0 +1,191 @@
+\section{Introduction to Neural Systems}
+
+\subsection*{Biological Neural Networks - Generalities}
+
+The nervous system is a network of interconnected, specialised cells called \textbf{neurons}. These cells process and transmit signals, enabling complex functions. It is important to note that not all organisms possess a nervous system. Simpler life forms, such as paramecia and sponges, can still perform actions like moving, eating, and escaping using chemical reactions in response to environmental stimuli.
+
+\subsection*{Advantages of Nervous Systems}
+
+Nervous systems provide significant evolutionary advantages:
+
+\begin{itemize}
+    \item \textbf{Selective Transmission of Signals}: They allow the transmission of signals across distant areas, facilitating the evolution of more complex bodies. There is a co-evolution between the body and the brain, as more complex bodies require more computational power from the brain.
+    \item \textbf{Complex Adaptation}:  Nervous systems enable better adaptation to changing environments by processing information from sensors and allowing for more flexible responses.
+\end{itemize}
+It has been observed that many elements of nervous systems and neuron behaviour are similar across animal species. This suggests that a common ancestor developed a nervous system from which several species then evolved, maintaining core functional elements. The complexity of an organism is often associated with the number of interconnections rather than simply the number of neurons. More connections facilitate more efficient information exchange.
+
+\subsection*{Artificial Neural Networks - Models}
+
+\subsubsection*{Two Main Neuron Communication Models}
+
+Two primary computational models are used to represent neural networks:
+\begin{enumerate}
+    \item \textbf{Spiking Neurons}: These models, rooted in computational neuroscience, consider the timing of neuron firing. Each neuron is modelled as a dynamical system with time-variant input/output signals. Activation depends on the time at which a signal is sent or received. These models are more biologically plausible, but computationally expensive.
+    \item \textbf{McCulloch-Pitts}: This model forms the basis of connectionism, focusing on the rate at which neurons fire. Signal strength is key, without time-variant components. If the sum of input signals surpasses an activation threshold, the neuron fires. The time aspect is removed and the output depends on the signal strength. This model is computationally less expensive, forming the basis of most modern AI applications.
+\end{enumerate}
+\textbf{Most modern AI is based on the McCulloch-Pitts model}, using signal strength without time-variant components.
+
+\subsubsection*{General Structure of ANNs}
+Artificial Neural Networks (ANNs) are composed of interconnected units, often arranged in layers. These networks communicate with an external environment through input and output units. Any other units are called internal or hidden units. These units are connected by connections, called \textbf{synapses}, which have associated weights that multiply the incoming signals. Each node computes the weighted sum of its inputs and applies an activation function \(\Phi\) to generate an output signal.
+
+\subsubsection*{Bias Node}
+
+A bias node provides a fixed output, such as -1, which is modulated by a weight. This adaptable threshold allows the network to be a universal approximator.
+
+\subsubsection*{Activation Functions}
+Activation functions can be linear or non-linear and determine the output of a neuron given a weighted sum of inputs. Common examples include:
+\begin{itemize}
+    \item Identity: A simple linear function.
+    \item Step: Introduces a discontinuity at zero.
+    \item Sigmoid: Continuous, non-linear, monotonic, bounded, and asymptotic. Sigmoid functions are smooth and their derivatives are simplified.
+    \item ReLU (Rectified Linear Unit): Often used in deep neural networks.
+\end{itemize}
+\textbf{Sigmoid functions are commonly used due to their properties}.
+
+\subsubsection*{Different Architectures}
+Different ANN architectures exist based on how information flows through the network:
+\begin{enumerate}
+    \item \textbf{Feed-Forward Neural Networks (FFNN)}: Information flows in one direction, from inputs to outputs.
+    \begin{itemize}
+        \item \textbf{Perceptron}: The simplest model with only input and output nodes, and no hidden layers.
+        \item \textbf{Multi-Layer Perceptron (MLP)}: Similar to a perceptron but with one or more hidden layers.
+    \end{itemize}
+    \item \textbf{Recurrent Neural Networks (RNN)}: Information flows both ways, creating a form of memory. Recurrent connections go from forward to backward layers (outputs to inputs). Different types include auto-associative, Hopfield, Elman and self-organizing maps.
+\end{enumerate}
+
+\subsection*{How ANNs Work}
+
+Each node divides the input space into two regions, one where the weighted sum of the inputs (A) is greater than or equal to zero (A>=0) and one where A < 0. The separation line is defined by the synaptic weights: \(w_1x_1 + w_2x_2 - \vartheta = 0 \rightarrow x_2 = \vartheta / w_2 - (w_1/w_2)x_1\). By combining neurons, we create intersections that separate regions in the input space, allowing for classification.
+\subsubsection*{Single vs Multi-Layer Perceptron}
+\begin{itemize}
+    \item \textbf{Single-Layer Perceptron}: Can only solve linearly separable problems.
+    \item \textbf{Multi-Layer Perceptron (MLP)}: Can solve non-linearly separable problems through hidden nodes that remap the input space into a linearly separable space. For example, the XOR problem, a non-linear problem, requires hidden layers to be solved.
+\end{itemize}
+\textbf{Hidden layers are crucial for solving non-linear real-world problems}.
+
+\subsection*{Applications of ANNs}
+
+ANNs can be used for a wide range of applications:
+\begin{itemize}
+    \item \textbf{Pattern Recognition}: Such as handwritten text recognition (OCR), voice, and anomaly detection.
+    \item \textbf{Content Generation}: For instance, creating synthetic reproductions of artistic images or voice.
+    \item \textbf{Regression}: Used for time-series modelling and forecasting, and function approximation.
+    \item \textbf{Classification}: Including biomedical data analysis and image recognition.
+    \item \textbf{Control}: Used as a black-box control system for robots and industrial plants.
+    \item \textbf{Self-driving cars}:  For image detection, recognition, and driving.
+    \item \textbf{Network efficiency}:  For adaptive protocols based on traffic modelling and forecasting.
+    \item \textbf{Cybersecurity}: Used for malware and intrusion detection.
+    \item \textbf{Marketing}:  For customer profiling and advertising.
+    \item \textbf{Fin-tech}: Used for trading, stock trend forecasting.
+\end{itemize}
+
+\section{ANN Training Algorithms}
+\subsection*{Types of Learning}
+Training algorithms can be categorized into three main types:
+\begin{enumerate}
+    \item \textbf{Supervised Learning}: Correct outputs are known, used in regression and classification. The goal is to minimize the error, such as least squares error (LSE). The main algorithm is \textbf{back-propagation} (backprop). Backpropagation adjusts weights based on the error between the target output and the actual output of the network.
+   \item \textbf{Unsupervised Learning}: Correct outputs are not known. The goal is to discover correlations in data, perform dimensionality reduction/compression (e.g., auto-encoders, PCA), and feature extraction. The main algorithm is \textbf{Hebbian learning}, which adjusts weights based on the correlation of node outputs.
+    \item \textbf{Sequential Decision Tasks}:  Correct outputs are not known, and the goal is to find a mapping from states to actions. The main algorithm is \textbf{reinforcement learning}, where an agent learns optimal actions based on rewards.
+\end{enumerate}
+
+\subsection*{Preventing Overfitting}
+Overfitting occurs when a network performs well on training data but poorly on new data. Too many weights can cause the network to overfit the training data. To avoid this, the available data is typically divided into:
+\begin{itemize}
+    \item \textbf{Training Set}: Used for weight updates.
+    \item \textbf{Validation Set}: Used for error monitoring. Training should be stopped when error on validation set begins to grow.
+\end{itemize}
+Other techniques like cross-validation are used to further avoid overfitting.
+
+\subsection*{Training by Back-Propagation}
+Backpropagation is a supervised learning algorithm used to adjust weights in a neural network based on errors observed from a known set of labelled inputs. The process involves:
+\begin{enumerate}
+    \item \textbf{Inject an Entry}: Input is fed into the system.
+    \item \textbf{Compute the intermediate h}: Calculate the output of each hidden node, denoted as h, given by h = f(W*x) where W is the matrix of weights and x is the vector of the inputs.
+    \item \textbf{Compute the output o}: Calculate the output of each output node, denoted as o, given by o = f(Z*h) where Z is the matrix of weights between hidden and output nodes.
+    \item \textbf{Compute the error output}: This is done by using calculus, denoted as \(\delta_{output}\)  = f'(Zh) * (t-o), where t is the target output.
+    \item \textbf{Adjust Z on the basis of the error}: The weights between hidden and output layers are updated using  Z(t+1) = Z(t) + \(\eta \delta_{output}\) h, where \(\eta\) is the learning rate.
+    \item \textbf{Compute the error on the hidden layer}:  This is done by using calculus, denoted as \(\delta_{hidden}\) = f'(Wx) * (Z\(\delta_{output}\)).
+    \item \textbf{Adjust W on the basis of this error}: The weights between input and hidden layers are updated using  W(t+1) = W(t) + \(\eta \delta_{hidden}\) x.
+\end{enumerate}
+\textbf{Backpropagation works recursively from output to input layers} to adjust weights until a minimum error is achieved. Modern optimizers are typically based on this concept.
+
+\section{Neuro-evolution}
+
+\subsection*{Training by Neuro-evolution}
+
+Neuroevolution uses evolutionary computation to construct neural networks, offering a way to find non-linear mappings from inputs to outputs. It is often used in evolutionary robotics, where sensor inputs are directly mapped to actions. Neuroevolution can handle large or continuous state and output spaces, which is often difficult for backpropagation. It is usually applied to supervised learning (error function is used as fitness), but is also used in agent-based simulations and artificial life (Alife) studies.
+
+\subsection*{Basic Neuro-evolution}
+
+The genotype in neuroevolution can encode several aspects of the neural network:
+\begin{enumerate}
+    \item \textbf{Weights}: With a predefined network topology, each weight is encoded in a separate gene. The genotype is typically of fixed length.
+    \item \textbf{Topology}: A variable-length genotype encodes the presence and type of neurons and their connectivity.
+    \item \textbf{Topology and Weights}: A combination of the above two cases.
+   \item  \textbf{Learning rules}: Fixed or variable length genotype encodes learning rules rather than weights.
+\end{enumerate}
+
+\subsection*{Evolution of Weights - Generalities}
+
+A population of ANNs with random weights is evolved with an evolutionary algorithm. The ANN topology is decided in advance and fixed. Each weight is represented by one or more genes. The fitness function can be error, as in back-propagation, or a higher-level consequence of the network output, such as the behaviour of a robot. The initial weights are genetically encoded and learning can happen at each generation, with fitness measured after the training or lifetime learning. Usually, the trained weights are not written back into the genome to avoid Lamarckian learning.
+
+\subsection*{Evolution of Weights - Challenges}
+\begin{itemize}
+    \item \textbf{Premature Convergence}: Loss of diversity and stagnation in progress.
+    \item \textbf{Large Networks}:  Too many parameters to optimize simultaneously.
+    \item \textbf{"Competing Conventions"}: Different network representations can have the same functionality, which makes crossover problematic. Crossover of weights between the same links can result in crossing of weights that are not related to the same part of the network.
+\end{itemize}
+\subsection*{Evolution of Weights - Cooperative Synapse Neuroevolution (CoSyNE)}
+CoSyNE extends the concept of ESP to synapses rather than neurons. Each subpopulation keeps candidate values for a specific weight and, at each step, the algorithm shuffles the elements to create candidate networks, using one weight from each subpopulation. This approach allows the optimization of weights for specific roles in the network. Selection and reproduction occur within each subpopulation. CoSyNE is a form of cooperative co-evolution where each neuron is optimized to have a compatible role.
+
+\subsection*{Evolution of Topology - Analog Genetic Encoding (AGE)}
+
+AGE allows the representation and evolution of arbitrary topologies of analog networks, including neural networks. This involves a variable-length genotype with terminal tokens and non-coding genomes interspersed throughout.
+
+\subsection*{Evolution of Topology - Weight Agnostic Neural Networks}
+
+A weight agnostic approach to neuro-evolution proposes that certain tasks can be solved by neural networks evolved only with respect to their topology, regardless of the weights used. The networks are tested with a fixed range of weights applied randomly, and networks are ranked based on the average performance. This approach focuses on the effect of topology, similar to some emerging ideas in neuroscience.
+
+\subsection*{Evolution of Topology and Weights}
+Algorithms in this class are called TWEANNs, topology and weight evolving artificial neural networks. This approach faces several challenges:
+\begin{itemize}
+    \item \textbf{Initial population}: Random initialisation can result in many inefficient networks.
+    \item \textbf{High-Dimensional Search Space}: Allowing for topological evolution can lead to unnecessary complexity.
+    \item \textbf{Competing conventions}: More complex as the topology itself also evolves.
+    \item \textbf{Loss of innovative structures}: More complex networks may not perform well initially compared to simpler networks and there is a risk that they are lost from the population.
+\end{itemize}
+\subsection*{Evolution of Learning Rules}
+Learning rules describe how weights are updated at runtime, and can be represented by polynomial expressions. Instead of optimizing weights, the constants in the learning rule expression are encoded and optimized. This is used in studying synaptic plasticity, allowing analysis of the evolution of learning mechanisms in living organisms.
+
+\section{Advanced Neuro-evolution}
+
+\subsection*{Neural Evolution of Augmenting Topologies (NEAT)}
+
+NEAT is a successful TWEANN algorithm, which addresses initialization problems by starting with minimal structures. The search starts in a space associated with minimal topologies and transitions into high-dimensional space as complexity increases. It protects complex networks from competing with simpler networks.
+\subsubsection*{Advanced Genetic Encoding}
+NEAT utilizes an advanced genetic encoding where each gene encodes a connection, including input and output node IDs, a weight, an enabled flag and a historical marking or innovation marking.
+\subsubsection*{Historical Markings}
+Historical markings track when a topological feature, such as a connection, appeared during the evolutionary process. This number allows matching of networks with different topologies and allows for homologous recombination.
+\subsubsection*{Crossover}
+Crossover is performed by aligning genotypes based on historical markings and then randomly selecting genes from either parent to form offspring, which might change the weights, but keeps the semantics of the network intact.
+\subsubsection*{Speciation}
+NEAT divides the population into species based on similarity, grouping organisms by network architecture and historical markings. Mating happens within species, allowing promising topologies the chance to be optimized. Fitness sharing prevents a single species from dominating the population, maintaining diversity. Speciation is based on clustering methods that consider excess genes, disjoint genes and average weight differences in shared genes.
+\subsection*{Example Applications of NEAT}
+NEAT has been used to create AI that plays games and is also applicable to complex real world problems:
+\begin{itemize}
+    \item \textbf{AI playing car racing games}.
+    \item \textbf{AI playing Flappy Bird}.
+\end{itemize}
+\subsection*{Compositional Pattern Producing Networks (CPPNs)}
+
+CPPNs act as indirect encoding for other objects. They have different activation functions which possess desirable properties. They generate properties observed in biological systems such as symmetry, repetition and variation.  CPPNs can encode 2D images and 3D robot morphologies.  CPPNs act as a function of geometry and compose mathematical functions to generate properties.
+
+\subsection*{HyperNEAT}
+HyperNEAT uses CPPNs to encode Neural Network connection strengths.  By compactly encoding connectivity patterns, HyperNEAT has been shown to evolve networks with several million connections. It applies NEAT to the CPPN rather than to the original networks.  HyperNEAT has been used successfully to evolve neural networks for various tasks, including robot locomotion.  It optimises a smaller CPPN to provide weights to a larger neural network.
+\subsection*{Compressed Network Search}
+
+Compressed Network Search evolves networks with over 1,000,000 weights by transforming genotypes using a Fourier transformation. This compression technique allows search to be performed in the Fourier space rather than the original space.
+
+\subsection*{Deep Learning and Network Architecture Search (NAS)}
+
+Network Architecture Search (NAS) is an active research area in Deep Learning with many papers based on Evolutionary Computation.  Approaches based on regularised evolution are used to minimize complexity while optimising performance. Techniques, such as NEAT and HyperNEAT, that were developed before the deep learning era, are now being used for optimizing deep networks.

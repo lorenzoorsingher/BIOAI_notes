@@ -1,0 +1,220 @@
+\section{Constrained Optimization}
+
+\subsection*{Motivation}
+
+Evolutionary Algorithms (EAs) are inherently unconstrained search techniques, limited only by boundary constraints.  However, practical problems often involve numerous equality and inequality constraints, both linear and nonlinear.  This necessitates mechanisms for EAs to handle such constraints. The basic idea of constrained optimization is that we not only have a defined search space with upper and lower boundaries for the variables, but we also have additional constraints that further restrict the feasible search space. We need to find optimal solutions that satisfy not only the search space but also these additional constraints.
+
+\subsection*{Constraint Handling Mechanisms}
+
+Several techniques have been developed to enable EAs to deal with equality and inequality constraints. These include:
+
+\begin{itemize}
+    \item \textbf{Penalty functions}
+    \item \textbf{Separation of constraints and objectives}
+    \item \textbf{Special representations and operators}
+    \item \textbf{Repair algorithms}
+\end{itemize}
+
+\section{Penalty Functions}
+
+\subsection*{Core Idea}
+
+The main concept behind penalty functions is to transform a constrained optimization problem into an unconstrained one.  This is achieved by adding (or subtracting) a value to the objective function based on the constraint violation of a given solution.  This approach, initially proposed by Richard Courant in the 1940s for classical optimization, is now widely used in the EA community.
+
+\subsection*{Types of Penalty Functions}
+
+In classical optimization, two types of penalty functions are considered:
+
+\begin{itemize}
+    \item \textbf{Exterior Methods:}  These start with an infeasible solution and move towards the feasible region as the penalty decreases.  The penalty is high in unfeasible areas and decreases as the solution approaches feasibility. This method is most commonly used with EAs.
+    \item  \textbf{Interior Methods:} Here, the penalty is small for points far from constraint boundaries and increases to infinity as boundaries are approached. This method requires an initial feasible solution. Thus, this method is less commonly used with EAs.
+\end{itemize}
+
+\subsection*{Static Penalty}
+EAs typically adopt exterior penalty functions of the form:
+\[\Phi(x) = f(x) + \sum_{i=1}^{jmax} r_i G_i(x) + \sum_{j=1}^{kmax} c_j L_j(x)\]
+where \(\Phi(x)\) is the new objective function, \(G_i\) and \(L_j\) are functions of the constraints \(g_i(x)\) and \(h_j(x)\), and \(r_i\) and \(c_j\) are positive constants called penalty factors. The most common forms for \(G_i\) and \(L_j\) are:
+\[G_i(x) = max(0, g_i(x))^{\beta}\]
+\[L_j(x) = |h_j(x)|^{\gamma}\]
+where \(\beta\) and \(\gamma\) are typically 1 or 2.  Equality constraints are often transformed into inequality constraints using a tolerance (\(\epsilon\)): \( |h_j(x)| - \epsilon \leq 0\).
+
+Another static penalty approach adds a penalty factor proportional to the number of violated constraints:
+\[\Phi(x) = f(x) + W \times penalty(x)\]
+where W is a constant and \(penalty(x)\) counts the number of violated constraints, a value of 1 is added if the constraint is violated, otherwise 0.
+
+\subsection*{Dynamic Penalty}
+
+In dynamic penalty methods, the penalty function changes over time. A common approach increases the penalty over generations, such as the method proposed by Joines and Houck:
+\[\Phi(x,t) = f(x) + C \times t^{\alpha} \times \left(\sum_i \max(0, g_i(x)) + \sum_j  \max(0, |h_j(x)|-\epsilon) \right)^{\beta} \]
+where \(C\), \(\alpha\), and \(\beta\) are user-defined constants, and t is the generation number. Typically, the penalty increases as the evolutionary process proceeds, encouraging convergence to feasible areas.
+
+\subsection*{Adaptive Penalty}
+
+Adaptive penalty methods adjust the penalty function based on feedback from the search process. Bean and Hadj-Alouane developed a method where each solution is evaluated by:
+\[\Phi(x, t) = f(x) + \lambda(t) \times  \left(\sum_i \max(0, g_i(x))^2 + \sum_j |h_j(x)|^2 \right)\]
+The penalty component, \(\lambda(t)\), is updated every generation:
+\[ \lambda(t+1) =
+\begin{cases}
+    \lambda(t) / \beta_1 & \text{if all best solutions in last } k \text{ generations were feasible} \\
+    \lambda(t) \times \beta_2 & \text{if all best solutions in last } k \text{ generations were infeasible} \\
+    \lambda(t) & \text{otherwise}
+\end{cases}
+\]
+where \(\beta_1\), \(\beta_2 > 1\) and \(\beta_1 \neq \beta_2\), and \(k\) is a user-defined parameter representing the generation gap.  This method decreases the penalty if recent best solutions were feasible and increases it if they were infeasible.
+
+\subsection*{Main Issues of Penalty Functions}
+
+The ideal penalty factors are highly problem-dependent, even in dynamic or adaptive penalty methods. If the penalty is too high, the EA might quickly be pushed inside the feasible region, making it hard to explore the boundaries.  If the penalty is too low, the EA may spend excessive time exploring the infeasible region.
+
+\subsection*{Other Penalty-Based Approaches}
+
+\subsubsection*{ASCHEA}
+The Adaptive Segregational Constraint Handling Evolutionary Algorithm (ASCHEA) uses evolution strategies with an adaptive penalty, constraint-guided recombination, and segregational selection. The adaptive penalty function is given by:
+\[
+\Phi(x) =
+\begin{cases}
+    f(x) & \text{if } x \text{ is feasible} \\
+    f(x) - \alpha \sum_j g_j^+(x) + |h_j(x)|  & \text{if } x \text{ is infeasible}
+\end{cases}
+\]
+where \(g_j^+(x)\) represents the positive part of \(g_j(x)\). The penalty factor \(\alpha\) is adapted based on the desired ratio of feasible solutions (\(\tau_{target}\)) and the current ratio (\(\tau_t\)). The recombination operator combines infeasible and feasible solutions when \(\tau_t < \tau_{target}\), while the segregational selection operator selects a ratio (\(\tau_{select}\)) of feasible solutions for the next generation.
+
+\subsubsection*{Stochastic Ranking}
+This method uses multi-membered Evolution Strategies with a penalty function and a ranking process.  It balances the influence of the objective and penalty functions using a user-defined parameter \(P_f\), and does not require a penalty factor.  The population is sorted using a stochastic bubble sort-like algorithm, where comparison is based on either the objective function or constraint violations with a probability of \(P_f\) or \(1-P_f\) respectively. Empirically, \(0.4 < P_f < 0.5\) produces the best results.  This method is easy to implement and requires fewer fitness evaluations than other methods.
+
+\section{Separation of Constraints and Objectives}
+
+\subsection*{Core Idea}
+Unlike penalty functions that combine the objective function and constraints, these approaches handle constraints and objectives separately.
+
+\subsection*{Examples}
+\begin{itemize}
+    \item \textbf{Behavioral memory}
+    \item \textbf{Coevolution} (using two populations)
+\end{itemize}
+
+\subsection*{Multi-objective Optimization Concepts}
+The main idea is to redefine the single-objective optimization of \(f(x)\) as a multi-objective problem with \(m+1\) objectives, where \(m\) is the number of constraints. Then, any multi-objective EA (e.g., NSGA-II) can be used. The concept of constrained domination is used to extend the Pareto dominance to constrained optimization:
+
+\subsubsection*{Single-objective Optimization}
+When comparing two solutions:
+\begin{itemize}
+    \item Both feasible: Choose the solution with better objective function value.
+    \item One feasible, one infeasible: Choose the feasible solution.
+    \item Both infeasible: Choose the solution with smaller constraint violation.
+\end{itemize}
+
+\subsubsection*{Multi-objective Optimization}
+Solution i constrains dominates solution j if:
+\begin{itemize}
+    \item Solution i is feasible and j is not.
+    \item Both are infeasible, and i has a smaller constraint violation.
+    \item Both are feasible, and i Pareto dominates j.
+\end{itemize}
+This means that feasible solutions have a better non-domination rank than infeasible ones. Feasible solutions are ranked according to their non-domination level while among infeasible solutions, the one with the smallest constraint violation has a better rank.
+
+\section{Special Representations and Operators}
+
+\subsection*{Special Representations}
+For difficult problems, a generic representation might not be suitable. Special representation schemes and genetic operators are designed for these cases, such as Random Keys or Homomorphous Maps. Homomorphous Maps transform the feasible region into an easier shape to explore, such as an n-dimensional cube.
+
+\subsection*{Special Operators}
+Special genetic operators can be designed to produce offspring that lie on the boundary between feasible and infeasible regions, or that are feasible by construction.
+
+\section{Repair Algorithms}
+
+\subsection*{Core Idea}
+Repair algorithms transform an infeasible solution into a feasible one.
+
+\subsection*{Repair Mechanisms}
+
+Possible repair mechanisms include:
+
+\begin{itemize}
+    \item Greedy algorithms (optimization algorithms making the best decision at each step)
+    \item Random algorithms (based on randomized perturbations of unfeasible solutions)
+    \item Custom heuristics (problem-dependent)
+\end{itemize}
+
+\subsection*{Handling Repaired Solutions}
+
+Repaired solutions can be used either for fitness evaluation only ("never replacing") or to replace the original unfeasible solutions:
+\begin{itemize}
+    \item Always replace ("always replacing")
+    \item Replace with some probability (e.g., "5\% rule" for combinatorial problems)
+\end{itemize}
+Replacement can be seen as a form of Lamarckian evolution.
+
+\subsection*{Examples of EAs Based on Repair Mechanisms}
+
+\begin{itemize}
+    \item GENOCOP III (maintains separate populations of search and reference points)
+    \item Problem-dependent repair algorithms (e.g., for robot path planning)
+\end{itemize}
+Repair algorithms are a good choice when infeasible solutions can be easily transformed into feasible ones, however, they may introduce search bias.
+
+\section{Hybrid Methods}
+These methods combine EAs with other search techniques.
+
+\subsection*{Examples}
+
+\begin{itemize}
+    \item Genetic Algorithm + Artificial Immune System (AIS): Using feasible solutions as antigens and evolving antibodies (infeasible solutions) to be similar to antigens.
+    \item \(\epsilon\)-constrained method:  Relaxing constraints using a satisfaction level (\(\epsilon\)) with a lexicographic order, often used in Differential Evolution with gradient-based mutation and a modified Nelder-Mead method.
+\end{itemize}
+
+\section{Recent Ideas}
+
+\subsection*{Ensemble of Constraint-Handling Techniques}
+Using several constraint-handling techniques, each with its own population and parameters. Offspring compete both within and across populations to automate the selection of the best technique for a problem.
+
+\subsection*{Hybrid Methods with Gradient-Based Information}
+Incorporating gradient information from fitness or constraints, such as combining EAs with gradient-based local search, Sequential Quadratic Programming (SQP), or Support Vector Machines (SVM).
+
+\subsection*{Modified CMA-ES}
+Applying adaptive penalty functions or modifying the Covariance Matrix update to sample only in the feasible region.
+
+\subsection*{Viability Evolution}
+Eliminating unviable solutions based on shrinking feasibility boundaries that are adapted at runtime.
+
+\section{Recap of Constraint Handling Techniques (CHT)}
+
+\begin{center}
+    \begin{tabular}{|l|l|l|}
+    \hline
+    \textbf{Technique} & \textbf{Pros} & \textbf{Cons} \\
+    \hline
+    \textbf{Penalty-based} & & \\
+    \hline
+    Death & Simple implementation & No gradual “push” towards feasibility\\
+    \hline
+    Static & Simple implementation & Needs extra parameters/weights\\
+    \hline
+    Dynamic & Adjusts penalty over time & Needs extra parameters/weights\\
+    \hline
+    Adaptive & Uses feedback from search & Extra parameters, hard to design adapt. rules\\
+    \hline
+    ASCHEA & Controls \# feas. solutions & Extra parameters, needs large budget\\
+    \hline
+    SR & Needs (relatively) small budget & 1 extra parameter (\(P_f\))\\
+    \hline
+    \multicolumn{3}{|l|}{\textbf{Separation of constraints and objectives}} \\
+    \hline
+    & No need for penalty, efficient handling also in MO cases & No control\\
+    \hline
+    \multicolumn{3}{|l|}{\textbf{Special representations \& operators}} \\
+    \hline
+    & Can be very efficient on specific problems & Complexity, problem-specificity\\
+    \hline
+    \textbf{Repair algorithms} & Efficient if repair is cheap & Complexity, problem-specificity, possible search bias\\
+    \hline
+    \textbf{Hybrid methods} & Can be very efficient & Extra parameters, complexity\\
+    \hline
+    \textbf{Recent ideas} & Can be very efficient & Extra parameters, complexity, may need gradient\\
+    \hline
+    \end{tabular}
+    \end{center}
+
+\section{Concluding Remarks}
+
+Various EAs have been used for constrained optimization with different constraint handling techniques. Evolution Strategies and Differential Evolution seem more suited than Genetic Algorithms. The (\(\mu\) + \(\lambda\)) strategy tends to produce better performance, and elitism is needed. Diversity is important; keeping only feasible solutions is not always a good idea. Research in this field is ongoing.

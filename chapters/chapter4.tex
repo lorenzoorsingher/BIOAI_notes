@@ -1,0 +1,156 @@
+\textbf{Multi-objective optimisation} deals with problems that involve multiple, often conflicting, objectives.  Unlike single-objective optimization where the goal is to find one optimal solution, multi-objective problems require finding a set of solutions that represent the best possible trade-offs between different objectives.  These problems are very common in the real-world.
+
+\section{Multi-Objective Optimization Problems (MOPs)}
+
+\subsection*{Definition}
+
+Many real-world problems are characterised by the presence of multiple, potentially conflicting objectives. Examples include:
+
+\begin{itemize}
+    \item Buying a car: Balancing comfort against price.
+    \item Buying a house: Considering location, size, quality and price.
+    \item Choosing a job: Balancing location, salary, flexibility, and contract duration.
+    \item Engineering design: Balancing lightness against strength.
+\end{itemize}
+When considering these objectives separately, different optimal solutions may be obtained. For instance, when buying a car, focusing solely on price might lead to a very cheap but uncomfortable car, while prioritizing comfort might result in a very expensive car.
+The goal of multi-objective optimization is to find solutions that represent different trade-offs between the objectives.  An ideal solution would be one that is optimal for all objectives simultaneously, but this is rarely possible due to the conflicting nature of the objectives. For example, a car that costs the minimum (15k) and has the maximum comfort (9) would be ideal, but such a car is usually not available.
+
+\section{Conventional Approaches ("A Priori" Methods)}
+These methods require some decisions to be made before the optimization process begins.
+
+\subsection*{Scalarization}
+Different objectives are combined into a single, linear or non-linear function.  A common approach is the weighted sum:
+\begin{equation*}
+f = w_1 \times f_1 + w_2 \times f_2 + ...
+\end{equation*}
+Where $f_i$ represent the different objective functions, and $w_i$ the associated weights.
+It's important to consider how each objective increases/decreases when $f$ is minimized or maximized.
+Objectives often have different orders of magnitude, making the magnitude of weights crucial.
+Different weights correspond to different rankings (importance) of the objectives. This approach restricts the fitness space, requiring re-optimization with different weights to find different trade-off solutions.
+
+\subsection*{Lexicographic Ordering}
+Objectives ($f_1, f_2, ..., f_k$) are ranked in a user-defined order of importance.
+The problem is solved as a sequence of single-objective optimization problems.
+First, $f_1$ is optimized, then $f_2$ is optimized with a constraint on $f_1$, and so on. For example, in car selection, the user might decide that price is more important than comfort.  The car with the minimum price is selected and then if there are ties, the car that maximizes comfort is selected. Conversely, if comfort is more important than price, then the car with the maximum comfort is selected, and if there are ties, the car with the lowest price is selected.
+
+\subsection*{epsilon-Constraint Method}
+$k$ single-objective optimization problems are solved separately.
+For each problem, $k-1$ constraints are imposed using user-defined thresholds ($\epsilon_j$). For example, minimizing price subject to comfort being greater than or equal to 7, and then maximizing comfort subject to price less than 30k.
+These methods require some a priori information such as the ranking of objectives and user-defined thresholds.
+A key question is whether all objectives can be considered simultaneously, without resorting to a priori methods.
+
+\section{Pareto Dominance}
+\subsection*{Definition}
+
+A solution $i$ is said to \textbf{Pareto-dominate} a solution $j$ if:
+
+\begin{itemize}
+    \item $i$ is no worse than $j$ on all objectives.
+    \item $i$ is better than $j$ on at least one objective.
+\end{itemize}
+Given a solution, we can identify solutions that are better (dominating), worse (dominated), or incomparable.  Incomparable solutions are better in one objective but worse in others.  Pareto dominance is evaluated in the fitness space, not the design space.  There is no single optimal solution, but there is a set of non-dominated solutions.
+
+\subsection*{Pareto Front}
+The \textbf{Pareto front} is the set of non-dominated solutions. These solutions are not dominated by any other solutions.  Solutions on the Pareto front are considered "good" solutions. The goal of multi-objective optimization is to find the Pareto front.
+
+\section{Multi-Objective Optimization (MOO) vs Multi-Criteria Decision Making (MCDM)}
+
+Multi-objective optimization problems are usually solved in two steps:
+\begin{enumerate}
+    \item Find the Pareto front (optimization).
+    \item Select a solution based on particular interests (decision-making).
+\end{enumerate}
+The main difference between a priori and a posteriori methods lies in when decisions are made:
+\begin{itemize}
+    \item \textbf{A priori methods}: Decisions are made before optimization (e.g., ranking objectives, defining constraints).
+    \item \textbf{A posteriori methods}: Decisions are made after optimization (based on the Pareto front).
+\end{itemize}
+A posteriori methods allow for learning about the problem, the trade-off surface, interactions among criteria, and structural information.
+
+\section{The Pareto Front: Shapes and Properties}
+
+The Pareto front can have different shapes and properties (convex/non-convex, continuous/discontinuous) depending on the problem and the minimization/maximization of each objective.
+Some solutions can be locally non-dominated, forming a local Pareto front. The goal is to find the global Pareto front.  If the Pareto front is non-convex, some regions cannot be found by linear scalarization. Linear scalarization corresponds to intersecting the Pareto front with a plane, and some parts of a non-convex front may not be intersected by any plane. This is a key reason why Pareto-based approaches are preferred over scalarization.
+The Pareto front is usually a set of discrete points, although it is visually represented as a continuous line.
+
+\section{Problems with Linear Scalarization}
+Linear scalarization can miss some regions of a non-convex Pareto front.
+This is because linear scalarization essentially intersects the Pareto front with a plane, and certain areas may not be intersected with any combination of weights.  To find all the solutions with a scalarization approach one would need to run the optimization with every possible combination of weights.
+
+\section{Crowding}
+
+\textbf{Crowding} refers to how close non-dominated solutions are to each other.  Ideally, one wants to cover the entire Pareto front as evenly as possible, achieving a uniform density.  Crowding can lead to a situation where some areas of the Pareto front are over-represented, while others are not covered at all.  Algorithms should try to distribute solutions uniformly across the Pareto front.
+
+\section{Advantages of Evolutionary Algorithms}
+\begin{itemize}
+    \item Population-based search allows simultaneous search for points approximating the Pareto front.
+    \item No need to make guesses about which combinations of weights are best.
+     \item No need to make assumptions about the Pareto front shape, since they can be non-convex or discontinuous.
+\end{itemize}
+
+\section{Important Aspects for Multi-Objective Optimization}
+\begin{itemize}
+    \item \textbf{Fitness Assignment}:
+    \begin{itemize}
+        \item Weighted sum, with weights adapted during evolution.
+        \item Separate evaluation of each objective by a different subpart of the population (e.g., VEGA).
+        \item Pareto-dominance.
+    \end{itemize}
+    \item \textbf{Diversity Preservation}:
+    \begin{itemize}
+         \item Penalize "crowded" areas of the Pareto front.
+        \item Attempt to cover the front uniformly.
+        \item Fitness sharing.
+        \item Crowding distance sorting.
+    \end{itemize}
+     \item \textbf{Memory of Non-Dominated Points}:
+    \begin{itemize}
+          \item Archive of non-dominated points, which can undergo mutation and recombination.
+        \item Elitist selection (e.g., ($\mu + \lambda$) strategy).
+    \end{itemize}
+\end{itemize}
+
+\section{An Early Approach: Vector-Evaluated Genetic Algorithm (VEGA)}
+
+\textbf{VEGA} evaluates each solution for each objective function separately.
+With $k$ objectives and $N$ solutions, there are $k$ populations of $N$ individuals, resulting in $N \times k$ independent evaluations.
+For each objective, the best $N/k$ individuals are selected, and then combined into a single population.
+However, fitness-proportionate selection corresponds to a linear combination of the objectives, where the weights depend on the population distribution. There is no explicit diversity preservation mechanism in VEGA.
+
+\section{Non-Dominated Sorting Genetic Algorithm-II (NSGA-II or NSGA-2)}
+
+Proposed by Deb et al. in 2002, NSGA-II is a milestone in multi-objective optimization.
+Typically used for binary or real-valued representations.
+Genetic operators (mutation and crossover) are the same as those used for single-objective optimization.
+
+\subsection*{Selection Mechanism}
+
+The selection mechanism is composed of two parts:
+\begin{enumerate}
+    \item \textbf{Pareto rank} based on non-dominated sorting, selecting solutions according to their dominance levels.  Solutions are ranked based on how many other solutions they dominate, with non-dominated solutions assigned rank 1, next front rank 2, etc..
+     \item \textbf{Crowding-distance sorting} prefers "isolated" solutions, improving Pareto front representation.  This also acts as a diversity preservation mechanism.  Solutions are ranked based on their distance to other solutions in the fitness space. Solutions in less crowded areas are preferred.
+\end{enumerate}
+
+\subsection*{Curse of Dimensionality}
+
+Performance breaks down as the number of objectives increases.
+As the number of objectives increases, it becomes harder to find non-dominated solutions, because the probability of generating a non-dominated solution becomes increasingly smaller.  The region of the fitness space containing better solutions decreases exponentially with the number of objectives.
+
+\subsection*{Pareto Front Levels}
+
+Solutions are ranked according to their level of dominance.
+Non-dominated solutions (Pareto front) have rank $R_1$, solutions dominated only by $R_1$ solutions have rank $R_2$, and so on.  This process is recursive, identifying multiple fronts.
+
+\section{Algorithm Details: Non-Dominated Sorting}
+The algorithm assigns a rank to each solution based on how many other solutions dominate it.
+The fast non-dominated sorting algorithm identifies the different Pareto fronts.
+
+\section{Algorithm Details: Crowding-Distance Sorting}
+Crowding should be avoided, and the Pareto front should be covered as evenly as possible. The crowding distance is a measure of how isolated a solution is in the fitness space.  Solutions with a higher crowding distance are preferred.  Extreme solutions are assigned infinite crowding distance.
+
+\section{Algorithm Details: Putting it All Together}
+Parent and offspring populations are combined before sorting. This is an elitist strategy. First preference is given to Pareto rank, then to crowding-distance. The algorithm sorts all individuals (parents and offspring) based on Pareto rank and then uses crowding distance to select the best individuals for the next generation.
+
+\section{Conclusion}
+Multi-objective optimisation is essential for solving real-world problems, where the solutions have different trade-offs between conflicting objectives. Understanding concepts such as scalarization, lexicographic ordering, epsilon-constraint, and Pareto-dominance are important. Techniques such as NSGA-2 are based on Pareto dominance and crowding, and provide state-of-the-art techniques to obtain the Pareto Front.
+

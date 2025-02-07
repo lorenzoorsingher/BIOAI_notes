@@ -1,0 +1,161 @@
+This chapter explores co-evolution, a bio-inspired paradigm in artificial intelligence, focusing on two main types: competitive and cooperative co-evolution.
+
+\section{Competitive Co-evolution}
+
+\subsection*{Generalities}
+
+Competitive co-evolution occurs when two or more different species co-evolve against each other.  Classic examples of this include\textbf{prey-predator} and\textbf{host-parasite} relationships.  The key aspect is that the fitness of each species is dependent on the fitness of the opposing species.
+
+\subsection*{Potential Advantages}
+
+\begin{itemize}
+    \item \textbf{Increased Adaptivity}: Competitive co-evolution can lead to an "evolutionary arms race", driving species to become increasingly better at overcoming their opponents, thus increasing their adaptivity.
+    \item \textbf{Incremental Improvement}: Better solutions can emerge incrementally as each species strives to outcompete the other, leading to increasingly complex and effective behaviours.
+    \item \textbf{Reduced Human Bias}: The need for a human-designed fitness function is reduced, allowing for more autonomous systems where better solutions emerge spontaneously.  The system itself determines what constitutes a 'good' solution by how well it overcomes the other competitor.
+    \item \textbf{Dynamic Fitness Landscape}: The continuously changing fitness landscape can help prevent stagnation in local minima, making it harder for the evolutionary process to get stuck.
+\end{itemize}
+
+\subsection*{Formal Models}
+
+Formal models of competitive co-evolution often use the\textbf{Lotka-Volterra equations}, which are a set of differential equations that describe the variation in population size of two competing species, particularly in a prey-predator scenario. The equations are as follows:
+
+\begin{align*}
+    \frac{dN_1}{dt} &= N_1(r_1 - b_1N_2) \\
+    \frac{dN_2}{dt} &= N_2(-r_2 + b_2N_1)
+\end{align*}
+
+Where:
+\begin{itemize}
+    \item $N_1$ and $N_2$ are the two populations (e.g., prey and predators)
+    \item $r_1$ is the increment rate of prey without predators
+    \item $r_2$ is the death rate of predators without prey
+    \item $b_1$ is the death rate of prey caused by predators
+    \item $b_2$ is the ability of predators to catch prey
+\end{itemize}
+It's important to note that in biology, fitness is related to the variation in population size, not the behavioural performance, which is difficult to define and measure.
+
+\subsection*{Computational Models}
+
+Formal models often assume constant behavioural performance across generations, which is not suitable for predicting how competitive co-evolution generates better individuals. Computational models aim to improve this and generate increasingly better solutions.
+
+\subsubsection*{Hillis's Sorting Algorithm Example}
+Hillis (1990) demonstrated that co-evolution could produce more efficient sorting programs than evolution alone, surpassing hand-designed algorithms. This involved co-evolving sorting programs against testing programs designed to produce difficult-to-sort lists. The sorting program's fitness is the quality of sorting, and the testing program’s fitness is one minus the quality.
+
+\subsubsection*{Strategy Recycling}
+
+A common issue in competitive co-evolution is\textbf{strategy recycling}, where the same set of solutions is discovered repeatedly across generations. This can lead to stagnation in relatively simple solutions.
+Possible causes of strategy recycling are:
+\begin{itemize}
+    \item \textbf{Lack of "generational memory"}: Individuals only compete against those of the current generation, ignoring past, potentially better, solutions.
+    \item \textbf{Restricted possibility for variation}: The need to overcome the other species can limit the variety of behaviours and solutions.
+    \item \textbf{Small genetic diversity}: Individuals become too similar because they are evolving to overcome a similar challenge.
+\end{itemize}
+
+\subsubsection*{Dynamic Fitness Landscape}
+
+Competitive co-evolution involves a dynamic fitness landscape, where the fitness of one species depends on the other, causing the landscape to change over time. In contrast to single-species evolution, where the fitness landscape is static, this makes evolutionary progress harder to track because fitness trends can oscillate.
+This phenomenon is known as the "**Red Queen hypothesis**," from *Through the Looking Glass*, where the Queen says, "it takes all the running you can do, to keep in the same place. If you want to get somewhere else, you must run at least twice as fast as that". This means that the fitness landscape itself is constantly changing.
+
+\subsection*{Measuring Evolutionary Progress}
+
+Due to the dynamic fitness landscape, evolutionary progress in competitive co-evolution cannot be measured solely by fitness trends of individual species. Alternative measures include:
+
+\begin{itemize}
+    \item \textbf{CIAO Graphs}: These graphs (Current Individual vs. Ancestral Opponent) represent the outcome of tournaments between current individuals and best opponents from previous generations. Ideal continuous progress would show a black lower diagonal and white upper diagonal.
+    \item \textbf{Master Tournaments}: These graphs plot the average outcome of tournaments between the current individual and all previous best opponents. Ideal continuous progress is indicated by continuous growth.
+\end{itemize}
+
+\subsection*{Examples in Evolutionary Robotics}
+
+\subsubsection*{Robotic Prey-Predator}
+
+An example of competitive co-evolution is a robotic prey-predator scenario. Two robots, one as predator and one as prey, compete in an arena.
+\begin{itemize}
+    \item \textbf{Goal}: The predator must catch the prey, and the prey must avoid the predator.
+    \item \textbf{Setup}: The prey has proximity sensors and is faster, while the predator has proximity and vision sensors but is slower.
+    \item \textbf{Fitness}: Prey fitness is the time to contact (maximized), and predator fitness is one minus the time to contact (maximized).
+    \item \textbf{Results}: Average and best fitness graphs display oscillations. Master Tournaments show progress only in the initial generations, followed by flat or decreasing graphs, indicating recycling dynamics. CIAO graphs were also not very effective in revealing progress.  However, co-evolved individuals often display highly adapted strategies.
+\end{itemize}
+
+\subsubsection*{Fitness Function Components}
+
+When designing fitness functions for evolving autonomous systems, it is important to consider:
+\begin{itemize}
+    \item \textbf{Internal vs. External}: Whether the fitness is based on information directly available to the agent's sensors or not.
+    \item \textbf{Functional vs. Behavioral}: Whether the fitness defines specific functional requirements or behavioral outcomes.
+    \item \textbf{Implicit vs. Explicit}: Depending on how many variables and constraints are included in the fitness function.
+\end{itemize}
+Experiments show that co-evolution might work better with internal, implicit, and behavioral fitness functions.
+
+\subsubsection*{Hall of Fame}
+
+To avoid recycling, Rosin and Belew (1997) proposed the "Hall of Fame," where new individuals are tested against all best individuals found so far.  It can be sufficient to test new individuals against a limited sample (e.g. 10) randomly selected from the Hall of Fame, which produces continuous incremental progress, as shown by CIAO and Master Tournaments. However, in the long run, the Hall of Fame can become similar to single-agent evolution due to a static pool of opponents, reducing creativity of new solutions.
+
+\subsubsection*{Adaptation}
+Adding Hebbian learning to the neural networks in a prey-predator system can drastically change co-evolutionary dynamics.  In one experiment, predators consistently won after 20 generations and always chose adaptation, while prey often chose random synapses due to poor sensors, showing how adaptation doesn't always help in co-evolutionary scenarios.
+
+\subsubsection*{Man-Machine Co-evolution}
+In man-machine co-evolution, computer programs are co-evolved against human players, as seen in a simplified version of the game Tron, where computer programs are represented as trees and evolved using genetic programming.  Computer programs become increasingly better, while humans learn across trials, rather than evolving in a biological sense.
+
+\subsubsection*{Agents vs Environments}
+The Paired Open-Ended Trailblazer (POET) system co-evolves a bipedal walker against an environment with obstacles to create a learning curriculum. Environments are filtered out if they are too simple or too hard, and agents survive if they achieve a minimum performance. This approach allows for the gradual complexification of the environment, which helps to create more robust agents.
+
+\section{Cooperative Co-evolution}
+
+\subsection*{Generalities}
+
+Cooperative co-evolution involves two or more species that co-evolve, where one species benefits another, but not necessarily vice-versa (interspecies cooperation), or individuals within a species co-evolve with some benefiting others in the same species (intraspecies cooperation).
+
+\subsection*{Types of Cooperation}
+
+\begin{itemize}
+    \item \textbf{Simple/Reciprocal Cooperation}: Helping individuals or species receive some advantage in return, bigger than or equal to the cost of helping.
+    \item \textbf{Altruistic Cooperation}:  Helping individuals or species incur a cost greater than any advantage they gain (if any), such as warrior ants that die to save a colony.  This is harder to explain with a pure "gene-centric" approach.
+\end{itemize}
+
+\subsection*{Formal Models of Altruism}
+
+\subsubsection*{Kin Selection/Inclusive Fitness}
+Hamilton’s rule (1964) states that altruism can evolve when the genetic relatedness between individuals is high, formalized as $r > \frac{c}{b}$, where r is the genetic relatedness, c is the cost of altruism, and b is the benefit.
+
+\subsubsection*{Multi-level (Group) Selection}
+This theory suggests that selection acts at the group level as well as the individual level; this approach does not require genetic relatedness.  However, it has received criticism due to slower/less likely mutations at the group level.
+
+\subsection*{Computational Models}
+In artificial evolution, there is no need to explicitly compute individual fitness or genetic relatedness; instead, one can focus on group fitness, if appropriate.  Various algorithms/strategies can be used:
+\begin{itemize}
+    \item \textbf{Homogeneous Groups}: All individuals are the same
+    \item \textbf{Heterogeneous Groups}: Individuals are different
+    \item \textbf{Team Selection}: Selection occurs at the team or group level
+    \item \textbf{Individual Selection}: Selection occurs at the individual level
+\end{itemize}
+
+\subsection*{Applications}
+
+\subsubsection*{Robotic Foraging Task}
+
+A robotic foraging task demonstrates cooperative behavior. In this experiment, mobile robots were evolved to collect objects in different scenarios:
+\begin{itemize}
+    \item \textbf{Individual}: One fitness point per object to the foraging robot.
+    \item \textbf{Cooperative}: One fitness point to all robots for each object (two robots needed to push an object).
+    \item \textbf{Altruistic}: One fitness point to all robots for each large object, and one point to the individual robot for each small object.
+\end{itemize}
+Results showed that cooperative individuals were genetically related and that altruism can lead to slightly lower foraging efficiency because some agents become free riders.
+
+\subsubsection*{Robotic Foraging Task with Uncertainty}
+In another foraging task, robots had to distinguish between food and poison sources. Genetically related individuals obtained the highest performance.  Robots communicated with each other by emitting light when they found the food.
+
+\subsubsection*{Co-evolution of Dispersal and Altruism}
+This experiment studied the relationship between dispersal (movement) and altruism among robots in a structured environment.  Dispersal can decrease local competition and relatedness, affecting altruism.  Models of selfish and altruistic behaviors were tested, with different selection levels (global vs. local), finding that altruism emerges when the benefits are high enough.
+
+\section*{Summary}
+
+\begin{itemize}
+    \item Competitive co-evolution can create more efficient and novel systems but can be hard to direct.
+    \item Generational memory is useful for preventing recycling.
+    \item Altruistic cooperation evolves if individuals are genetically related or there is group-level selection.
+    \item In robotics, altruism can emerge naturally through artificial evolution, with individuals sharing resources, performing cooperative tasks, and communicating information.
+    \item These findings can be used to understand biological systems and to implement swarms of autonomously cooperating robots.
+\end{itemize}
+
+

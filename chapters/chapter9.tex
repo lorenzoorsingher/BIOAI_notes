@@ -1,0 +1,243 @@
+\textbf{Swarm robotics} and \textbf{evolutionary robotics} are areas of research that apply principles observed in nature to robotics. The goal is to create systems that display desirable properties found in natural swarms. This lecture will cover some interesting applications in these areas.
+
+\section{Swarm Robotics}
+\subsection*{Generalities}
+\textbf{Swarm Robotics} is the robotic (embodied) implementation of emergent swarm behaviours observed in nature. The aim is to design multi-agent robotic systems characterized by:
+\begin{itemize}
+    \item \textbf{Robustness}: Ability to adapt to environmental changes
+    \item \textbf{Scalability}: System capabilities increase with the number of robots.
+    \item \textbf{Versatility/Flexibility}: Ability to adapt to different tasks.
+    \item \textbf{Low Cost}: Simpler individual units reduce overall system cost.
+\end{itemize}
+The main idea is to decentralize complexity by using simple robots.
+
+\subsection*{Sources of Inspiration}
+Swarm intelligence is inspired by behaviours seen in nature. Examples include:
+\begin{itemize}
+    \item Flocking and coordinated movement
+    \item Foraging via stigmergy, like ant colony optimization
+    \item Creation of bridges and complex structures
+\end{itemize}
+Ants and other social insects provide valuable examples of physical cooperation and task solving. Examples of tasks solved by ants include:
+\begin{itemize}
+    \item Passing a gap
+    \item Nest building
+    \item Grouped falling
+    \item Plugging potholes in a trail
+\end{itemize}
+These behaviours are desirable to replicate in robotics to create systems that are spontaneous and emergent.
+
+\subsection*{Example 1: Coordinated Exploration}
+\textbf{Pheromone Robotics}: One approach uses artificial pheromones.
+\begin{itemize}
+    \item Main features: Gradient via hop counts, shortest path, pheromone diffusion/evaporation
+    \item Example: Payton et al. (2005) used infrared signals to simulate pheromone trails
+\end{itemize}
+\textbf{Light-Based Repellent Pheromone}:
+\begin{itemize}
+    \item Hunt et al. (2019) used a light-based "repellent" pheromone with 400 Kilobots.
+    \item Surprising result: At high robot densities, stigmergy performed slightly worse than random walk.
+\end{itemize}
+This result indicates that random movement can be more efficient for exploration in certain scenarios.
+
+\subsection*{Example 2: Chaining}
+\textbf{Chains in prey retrieval/division of labour:}
+\begin{itemize}
+    \item  Mondada et al. (2005), Nouyan et al. (2009)
+    \item Main features: Limited sensing range, signaling of colours (directional chains)
+    \item Robots create chain-like structures to perform complex tasks.
+\end{itemize}
+
+\subsection*{Example 3: Coordinated Box Pushing}
+\begin{itemize}
+    \item A group of robots push objects together. (Kube and Zhang, 1993; Kube and Bonabeau, 2000)
+    \item Main features: Task requires cooperation, no explicit communication, behaviour-based approach, ant-inspired stagnation recovery mechanism.
+    \item Cooperation emerges from observing other robots' behaviours.
+    \item Robots work together to push objects towards a desired area.
+\end{itemize}
+
+\subsection*{Example 4: Cooperative Manipulation}
+\begin{itemize}
+    \item Mobile units assemble into connected entities that are larger and stronger than any individual unit. (e.g., Mondada et al., 2005; Gross et al., 2006)
+    \item Robots create chains or other formations to overcome obstacles or perform tasks too difficult for a single robot.
+\end{itemize}
+
+\subsection*{Example 5: Artificial Stigmergy for Autonomous Building Operations}
+\begin{itemize}
+    \item  Deterministic (add cell to corner area if 2 or 3 adjacent walls are present) vs probabilistic rules (add cell with a given prob. depending on the no. of adjacent walls). (Camazine et al., 2001)
+    \item  Coordination is based on the stimulus of occupied cells nearby, and response of adding a wall when two or three adjacent walls are present.
+    \item  This system uses simple rules to build complex structures.
+\end{itemize}
+
+\section{Reconfigurable Robotics}
+\subsection*{Generalities}
+A modular robot is composed of several (usually identical) components that can be re-organized to create morphologies suitable for different tasks.
+\textbf{Biological Inspiration}:
+\begin{itemize}
+    \item Groups of cells (cellular automata)
+    \item Groups of individuals (swarm intelligence)
+\end{itemize}
+Modular robots can change their morphology to adapt to different tasks.
+
+\subsection*{Types of Reconfigurable Robots}
+\begin{itemize}
+    \item \textbf{Chain-type}: Modules form chain-like structures.
+    \item \textbf{Lattice-type}: Modules form a 2D or 3D matrix.
+    \item \textbf{Hybrid type}: Combination of chain and lattice structures.
+    \item \textbf{Other types}: Robots that do not fit into the above categories.
+\end{itemize}
+
+\subsection*{Chain Type}
+\textbf{Example}: CONRO (Castano et al., 2000)
+\begin{itemize}
+    \item Main features: Fully self-contained, pin-hole connector (+latch), infrared-based guidance, docking relatively complex, good mobility.
+    \item Control can cope with sudden changes in the robot’s morphology.
+\end{itemize}
+\textbf{Example}: PolyBot (Yim et al., 2002)
+\begin{itemize}
+   \item Main features: 1-DOF module; MPC555 processor; externally powered.
+   \item Able to create a closed chain and change the robot's architecture.
+\end{itemize}
+
+\subsection*{Lattice Type}
+\textbf{Example}: A-TRON (Maersk McKinney Moller Institute, University of Southern Denmark)
+\begin{itemize}
+   \item Main features: Two half-spheres; 4 male and 4 female connectors; self-docking relatively simple; self-reconfiguration can require many steps.
+    \item These 3D structures can create complex morphological shapes.
+\end{itemize}
+
+\subsection*{Hybrid Type (Chain+Lattice)}
+\textbf{Example}: M-TRON (Murata et al., 2002)
+\begin{itemize}
+    \item Main features: Magnets or actuated mechanical hooks, driven by cellular automata rules.
+    \item Modules use magnetic hooks to attach to one another, with magnetic actuators for movement.
+\end{itemize}
+
+\subsection*{Other Types}
+\begin{itemize}
+    \item \textbf{Claytronics} (Goldstein et al., 2005): Relative displacement by means of electro-magnet rings.
+    \item \textbf{PPT} (Klavins et al., 2005): Stochastic reconfiguration of passively moving parts.
+    \item \textbf{Anatomy-based} (Christensen et al., 2008): Anatomic structures with differentiated elements.
+\end{itemize}
+
+\subsection*{Modular Soft Robots}
+\begin{itemize}
+   \item  \textbf{Simulated voxels} (Cheney et al., 2013): Evolution of locomotion.
+    \begin{itemize}
+    \item Uses simulation to evolve different kinds of tissues such as bone, muscles and tendons
+    \item  Different morphologies emerge using evolutionary computation.
+    \end{itemize}
+    \item \textbf{Air-filled silicon membranes} (Kriegman et al., 2019): Automatic shapeshifting in damaged robots.
+    \begin{itemize}
+    \item  Soft robots can automatically reconfigure their shape.
+    \item Soft tissues allow for flexibility and compliance.
+    \end{itemize}
+   \item  \textbf{Tensegrity modules} (Zardini et al. 2021): Diversity-based evolution of locomotion.
+   \begin{itemize}
+    \item  Modules are composed of elastomers and rigid sticks with linear actuators.
+    \item Both morphology and controller can be co-evolved.
+   \end{itemize}
+    \item  Hardware validation (sim-to-real analysis).
+\end{itemize}
+
+\section{Evolutionary Robotics}
+\subsection*{Generalities}
+\textbf{Evolutionary Robotics} (ER) is the automatic generation of control systems and/or morphologies of autonomous robots. It is based on a process of Artificial Evolution without human intervention.
+\textbf{Motivations}:
+\begin{itemize}
+    \item Difficult to design autonomous systems using a purely top-down engineering process, due to the complex and hard to predict interactions between robots and their environment.
+    \item ER can be used as a synthetic (as opposed to analytic) approach to study the mechanisms of adaptive behaviour in machines and animals.
+\end{itemize}
+The engineer defines the control components and selection criteria and artificial evolution discovers the most suitable combinations while robots interact with the environment.
+
+\subsection*{Representing Behaviour in ER}
+Behaviour in ER is a mapping between stimuli from the environment and the response of the agent.
+Examples of stimuli include:
+\begin{itemize}
+    \item smell
+    \item vision
+    \item touch
+\end{itemize}
+Examples of behaviour include:
+\begin{itemize}
+    \item actions such as moving to food
+    \item following a buddy
+\end{itemize}
+
+\subsection*{Reminder - Evolution of Neural Networks}
+The genotype in ER can encode:
+\begin{itemize}
+    \item \textbf{Weights}: Pre-defined network topology, each weight encoded in separate genes, fixed-length genotype.
+    \item \textbf{Topology}: Variable-length genotype encodes presence/type of neurons and their connectivity.
+    \item \textbf{Topology and Weights}: Combination of the first two cases.
+    \item \textbf{Learning rules}: Fixed or variable-length genotype encodes learning rules.
+\end{itemize}
+Neural networks can be used as a primitive approximation of the brain.
+
+\subsection*{How to Evolve Behaviour in ER}
+The process of evolving behaviour includes:
+\begin{enumerate}
+    \item \textbf{Population Initialization}: Initializing the population of robots and controllers.
+    \item \textbf{Robot Task Execution}: Robots perform a task in the environment.
+    \item \textbf{Fitness Evaluation}: Measuring the performance of each robot.
+    \item \textbf{Fitness-based Ranking}: Ranking robots based on fitness.
+    \item \textbf{Selection}: Selecting the fittest individuals to reproduce.
+    \item \textbf{Reproduction (mutation)}: Creating new individuals through mutation.
+\end{enumerate}
+This process is repeated for a certain number of generations until a satisfactory solution is reached.
+
+\subsection*{Example 1: Collision-Free Navigation}
+\begin{itemize}
+    \item  Experimental setup: A single 2-wheeled robot is placed in an arena with obstacles, and it has to explore it as much as possible (keeping on moving) without any collision.
+    \item Population of neural networks is evolved on a computer and transferred into robots at each generation for evaluation.
+    \item Experimental results: Evolved robots tend to have a preferential direction/speed.
+\end{itemize}
+
+\subsection*{Example 2: Homing for Battery Charge}
+\begin{itemize}
+   \item Experimental setup: The robot has a battery that lasts 20 seconds, and there is a battery charger in the arena. The robot has to reach it before its battery dies out.
+   \item Experimental results: After 240 generations, the EA finds a robot that is capable of moving around and going to recharge 2 seconds before its battery is completely discharged.
+\end{itemize}
+
+\subsection*{Example 3: Car Driving}
+\begin{itemize}
+    \item A car can be trained on a set of circuits by means of neural networks.
+    \item The total travel distance for each race is used to calculate the fitness.
+    \item By doing this in simulation we can optimise neural networks to perform self-driving
+\end{itemize}
+
+\subsection*{Example 4: The "Golem" Project}
+\begin{itemize}
+    \item Lipson and Pollack (2000) added the physical construction of the creatures by using a 3D thermoplastic printer and extensible bars.
+    \item Evolution takes place in simulation.
+    \item Fitness = distance covered by the robot.
+    \item Selected individuals are built by:
+        \begin{enumerate}
+            \item Printing the bars
+            \item Fitting joints and motors
+            \item Downloading the ANN into an embedded controller
+        \end{enumerate}
+\end{itemize}
+
+\subsection*{A (Non-Comprehensive) List of Projects on Swarm/Evolutionary Robotics}
+A lot of research is ongoing in this field.
+Examples include:
+\begin{itemize}
+    \item \textbf{ARE} (Autonomous Robot Evolution): Investigates the physical evolution of artifacts and recycling material.
+    \item \textbf{PHOENIX}: Developed methods for evolving small sensor agents for exploring inaccessible environments.
+    \item \textbf{DEMIURGE}: Developing methods to design all aspects of a robot swarm (sw/hw).
+    \item \textbf{EVOBODY}: Explored the potential of physically embodied evolutionary systems.
+    \item \textbf{SYMBRION}: Investigated modular robotic organisms that emerge by self-aggregating independent robotic units.
+     \item \textbf{NEW TIES}: Investigated artificial societies subject to adaptation through evolution, individual learning, and social learning.
+   \item \textbf{REPLICATOR}: Focused on the development of an advanced robotic system consisting of a super-large-scale swarm of small autonomous mobile micro-robots capable of self-assembling into large artificial organisms.
+   \item  \textbf{BROS}: Combines blockchain technology and swarm robotics systems to generate robotic models where robot interactions are encapsulated in transactions on the blockchain.
+    \item \textbf{SWARM-BOTS}: Designed and implemented self-organizing and self-assembling artifacts called swarm-bots.
+   \item \textbf{COCORO}: Developed autonomous robots that interact and exchange information to become aware of their environment.
+   \item  \textbf{I-SWARM}: Aimed to develop mass-production technology of micro-robots, for swarms of up to 1000 robots.
+    \item  \textbf{ROBOSWARM}: Aimed to develop an open knowledge environment for self-configurable, low-cost, and robust robot swarms.
+    \item \textbf{E-SWARM}: Aimed to develop a rigorous engineering methodology for the design and implementation of artificial swarm intelligence systems.
+    \item  \textbf{CHOBOTIX}: Aimed to develop µm-sized chemical swarm robots (“chobots”) that can move in their environment, and selectively exchange molecules in response to changes in temperature or concentration.
+\end{itemize}
+
+\section{Conclusion}
+Swarm and evolutionary robotics are active areas of research with promising results. They offer unique approaches to designing intelligent systems by drawing inspiration from nature. The combination of both swarm and evolutionary principles is likely to lead to future practical applications.

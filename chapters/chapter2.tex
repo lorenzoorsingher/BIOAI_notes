@@ -1,0 +1,218 @@
+Evolutionary algorithms are a key area in bio-inspired artificial intelligence.  They are a type of evolutionary computation and are implemented using a specific set of steps. Genetic algorithms are the first evolutionary algorithms to have been designed.  These algorithms are applicable to any problem domain, provided a suitable genetic representation, fitness function, and genetic operators are chosen.
+
+\section{Genetic Algorithms: A Checklist}
+When implementing a genetic algorithm, several key steps must be followed:
+
+\begin{enumerate}
+    \item \textbf{Devise a Genetic Representation}: A method to translate a problem's solution into a numerical representation, mapping phenotypes to genotypes and vice-versa. This is typically problem-specific and must match the chosen genetic operators.
+        \begin{itemize}
+        \item  The set of possible genotypes should include the optimal solution to the problem.
+        \item Choice of representation benefits from domain knowledge including the encoding of relevant parameters and appropriate accuracy.
+        \item  It must be complete, representing every feasible solution in the genotype space.
+        \item  A great simplification of genetics including single-stranded sequence of symbols, often fixed length, and often one chromosome with a haploid structure.
+        \end{itemize}
+    \item \textbf{Build an Initial Population}: Create a set of candidate solutions, often through random initialisation. The population size should be large enough to cover the search space, but small enough to be computationally feasible. Typical sizes range from tens to thousands of individuals.
+     \begin{itemize}
+         \item For binary strings, 0 or 1 are assigned with equal probability.
+        \item For real-valued representations, a uniform distribution is used within given bounds, if bounded. Alternatively, a "best guess" based on domain knowledge or design of experiments can be used.
+        \item For trees, they are built recursively from a root chosen from the function set. Each branch is then randomly chosen from either the function or terminal set.
+     \end{itemize}
+    \item \textbf{Design a Fitness Function}: This evaluates the performance of a phenotype with numerical scores.
+    \begin{itemize}
+    \item  It involves choosing components and combining these in a way that can discriminate between better and worse solutions.
+    \item  The fitness function can be objective, subjective through human inspection (Interactive Evolutionary Computation), or a combination of both.
+    \item Extensive testing of each phenotype is often required, and repeated evaluations may be needed.
+    \item The fitness function should be able to discriminate (return different values) so that the evolutionary process can be guided towards the optimum.
+    \item It is important to remember: “You Get What You Evaluate".
+    \end{itemize}
+    \item \textbf{Choose a Selection Method}: Determine which solutions should be selected for reproduction, biasing towards better individuals. The selection pressure is inversely proportional to the number of selected individuals.
+   \begin{itemize}
+     \item  It is important to ensure that less well performing individuals can also reproduce to some extent.
+   \end{itemize}
+    \item \textbf{Choose a Replacement Method}: Determine how new offspring replace members of the current population.
+    \item \textbf{Choose Crossover and Mutation}: Select genetic operators for creating new solutions from existing ones. Crossover combines genetic material from two parents, while mutation introduces variations to a single parent.
+    \item \textbf{Choose a Data Analysis Method}: Decide how to monitor the progress of the algorithm, tracking fitness, diversity, and convergence.
+\end{enumerate}
+The generation cycle is repeated until a termination criterion is met, such as:
+
+\begin{itemize}
+    \item  Maximum fitness value is found.
+    \item  A solution found is “good enough”.
+    \item  Maximum wall-clock time is reached.
+    \item A certain convergence condition is met.
+\end{itemize}
+
+\section{Genetic Representation}
+Genetic representation describes the elements of the genotype and its mapping to the phenotype. It is crucial for the success of a genetic algorithm.
+
+\subsection*{Discrete Representations}
+The genotype is a sequence of discrete symbols from an alphabet of cardinality \(k\).
+\begin{itemize}
+    \item  Binary strings are a common example, where \(k = 2\).
+    \item  A binary string can be mapped to different phenotypes including integer values, real values in a given range, or binary assignments for problems like job scheduling.
+    \item The conversion from real values to a bit string has a maximum accuracy of \(\frac{max - min}{2^n - 1}\).
+    \item More bits increases accuracy but slows evolution.
+    \item Binary coding can introduce "Hamming cliffs" where numerically adjacent values have very different bit representations.
+    \item  Gray coding can be used to minimize Hamming distance between representations of successive numerical values. Given a bitstring \(B = [b_1 b_2 \dots b_n]\), the corresponding Gray bitstring \(G = [g_1 g_2 \dots g_n]\) can be obtained as follows:
+        \begin{itemize}
+            \item \(g_1 = b_1\)
+            \item \(g_k = (b_{k-1} \text{ AND } (\text{NOT } b_1)) \text{ OR } ((\text{NOT } b_{k-1}) \text{ AND } b_1)\)
+        \end{itemize}
+\end{itemize}
+
+\subsection*{Sequence Representations}
+A particular case of discrete representation used for problems like the Traveling Salesman Problem (TSP).  The individual is a permutation of \(n\) different symbols, each occurring exactly once. For example, planning ski holidays with the lowest transportation costs.
+
+\subsection*{Real-Valued Representations}
+The genotype is a sequence of real values that directly represent problem parameters. Used when high-precision parameter optimization is required, such as the genetic encoding of a wing profile using pressure values.
+
+\subsection*{Tree Representations}
+The genotype is a tree with branching points and terminals. Suitable for encoding hierarchical structures like computer programs (Genetic Programming, GP).
+\begin{itemize}
+    \item   Trees are made of operators (function set: multiplication, If-Then, Log, etc.) and operands (terminal set: constants, variables, sensor readings, etc.).
+    \item   Requirements for GP include Closure: functions accept all terminals and function outputs, and Sufficiency: function and terminal sets can generate the solution.
+\end{itemize}
+
+\section{Initial Population}
+The initial population should be large enough to cover the search space but small enough in terms of evaluation. A uniform sample of search space is important.
+\begin{itemize}
+    \item Binary strings: 0 or 1 with probability 0.5.
+    \item Real-valued representations: uniform on a given interval.
+    \item Trees: built recursively starting from the root, selecting from the function set or terminal set at random.
+\end{itemize}
+ Hand-designed genotypes may cause a loss of genetic diversity or bias the evolutionary process.
+
+\section{Fitness Function}
+The fitness function evaluates the performance of a phenotype with one or more numerical scores.
+\begin{itemize}
+    \item It involves the choice and combination of components, with extensive testing of each phenotype.
+    \item   The fitness function should be able to discriminate between better and worse solutions.
+     \item  Subjective fitness, based on human inspection, can be used when objective quantification is not possible. This is the basis of Interactive Evolution Computation.
+    \item  A key concept to remember is "You Get What You Evaluate".
+\end{itemize}
+
+\section{Parent Selection}
+Parent selection ensures that better individuals produce more offspring. Selection pressure is inversely proportional to the number of selected individuals.
+
+\subsection*{Random Selection}
+Each individual has a probability of \(\frac{1}{N}\) to be selected, where \(N\) is the population size. This method does not use fitness information and is rarely used in EAs. It has the lowest selection pressure.
+
+\subsection*{Fitness-Proportionate Selection (Roulette-Wheel Selection)}
+The probability that an individual reproduces is proportional to its fitness relative to the population's fitness: \(p(i) = \frac{f(i)}{\sum{f(i)}}\). It biases selection towards the most fit individuals.
+    \begin{itemize}
+        \item   Fitness values must be non-negative.
+        \item   Uniform fitness values result in random selection.
+        \item   Few high-fitness individuals can create excessively high selection pressure.
+    \end{itemize}
+
+\subsection*{Rank-Based Selection}
+Individuals are sorted by fitness from best to worst. The rank is used to select individuals. The probability of selection is based on rank, offering lower selection pressure than fitness-proportionate selection: \(p(i) = 1 - \frac{r(i)}{\sum r(i)}\).
+
+\subsection*{Truncated Rank-Based Selection}
+Only the best \(x\) individuals can reproduce, each making the same number of offspring: \(\frac{N}{x}\).
+
+\subsection*{Tournament Selection}
+For every offspring, \(k\) individuals are randomly picked from the population, where \(k\) is the tournament size. The individual with the highest fitness is selected.  Larger \(k\) results in larger selection pressure.
+
+\subsection*{“Hall of Fame” Selection}
+The best individual from each generation is added to a Hall of Fame.  This archive can be used as a parent pool for crossover. This is used in co-evolutionary algorithms.
+
+\subsection*{($\mu$,$\lambda$) or ($\mu$+$\lambda$) Selection}
+Deterministic, rank-based methods mainly used in Evolution Strategies. $\mu$ indicates the number of parents, and $\lambda$ indicates the number of offspring produced.
+\begin{itemize}
+    \item \((\mu, \lambda)\) selection selects the best $\mu$ individuals from $\lambda$ offspring.
+    \item \((\mu + \lambda)\) selection selects the best $\mu$ individuals from both the $\mu$ parents and the $\lambda$ offspring. This is considered an elitist strategy.
+\end{itemize}
+
+\section{Replacement (or “Survivor Selection”)}
+This determines how the new offspring replace members of the current population.
+
+\subsection*{Generational Replacement}
+The old population is entirely replaced by the offspring.  This is the most frequent method. Also called “aged-based” or “non-overlapping” replacement.
+
+\subsection*{Generational Rollover}
+Offspring are inserted "in place," replacing the worst individuals in the current generation.
+\begin{itemize}
+    \item  A special case is the Steady-State scheme, where one offspring is generated per generation and replaces the worst member of the population.
+\end{itemize}
+
+\subsection*{Elitism}
+Maintains the \(n\) best individuals from the previous generation to prevent the loss of the best individuals due to mutations or sub-optimal fitness evaluation.  Higher \(n\) means less diversity.
+
+\section{Recombination (Crossover)}
+Emulates the recombination of genetic material from two parents during meiosis. It exploits the synergy of sub-solutions from parents. Applied to randomly paired offspring with a given probability \(P_c\). Common crossover types include:
+    \begin{itemize}
+        \item One-point crossover
+        \item  Uniform crossover
+        \item  Arithmetic crossover
+    \end{itemize}
+    Crossover techniques also exist for sequences and trees.
+
+\section{Mutation}
+Emulates genetic mutations, exploring the variation of existing solutions. Applied to each gene in the genotype with a probability \(P_m\).
+\begin{itemize}
+        \item  For binary genotypes, the common method is a bit flip.
+        \item  For real-valued genotypes, a delta value is added or subtracted to the existing value.
+        \item  Mutation operators also exist for sequence and tree genotypes.
+\end{itemize}
+
+\section{Crossover or Mutation?}
+Both are generally good to have. Mutation provides exploration while crossover provides exploitation capabilities. Mutation-only EAs are possible, but crossover-only EAs would not work because they cannot introduce new genetic material into the population.
+
+\section{Data Analysis: Assessing Fitness Landscape}
+The fitness landscape is a plot of fitness values associated with all genotypes.  The real landscape is unknown, but estimation helps to assess evolvability. The goal of evolution is to find the genotype with the best fitness. Estimating "ruggedness" of a fitness landscape is important.
+\begin{enumerate}
+    \item Sample random genotypes: if flat, use large populations.
+    \item Explore surroundings of individuals by applying genetic operators in sequence: larger fitness improvement suggests it's "easier" to evolve.
+\end{enumerate}
+
+\section{Data Analysis: Monitoring Performance}
+Track best/worst and/or population average fitness (+/- standard deviation) of each generation.
+Multiple runs are necessary, and average data and standard error are plotted. Fitness graphs are meaningful if the problem is stationary. These plots can be used to detect if the algorithm has stagnated or prematurely converged.
+\begin{itemize}
+    \item Stagnation: no further evolution possible even if the population remains diverse.
+     \item Premature convergence: no further evolution possible because the population lost diversity.
+\end{itemize}
+
+\subsection*{Typical Behavior of an EA}
+Evolutionary runs typically have three phases:
+\begin{itemize}
+    \item Early Phase: quasi-random population distribution.
+    \item Mid-Phase: population arranged around/on hills.
+     \item Late Phase: population concentrated on high hills.
+\end{itemize}
+
+\subsection*{Data Analysis: Measuring Diversity}
+Diversity indicates whether the population has potential for further evolution.  Measures of diversity depend on the genetic representation, for example, the sum of Hamming or Euclidean distances for discrete and real values, respectively.
+
+\section{Some Extra Considerations}
+\begin{itemize}
+    \item Is it worth putting effort on smart initialisation? Yes, if good solutions/methods exist, but this can lead to a loss of diversity and/or bias.
+    \item Are “long” runs beneficial? It depends on how much progress is desired. Multiple shorter runs might be better.
+\end{itemize}
+
+\section{Generalities}
+The original GA is now known as the Simple Genetic Algorithm (SGA) (Holland, 1975). Main features include binary encoding (used for discrete optimization but also for real-valued problems) and fitness-proportionate selection, uniform mutation, and one-point crossover. The SGA is generally considered inefficient, especially for continuous optimisation, and should not be applied unless the problem is naturally binary. Many variants of GAs exist today with different mutation/crossover operators and selection models.
+
+\section{Alternative Types of Genetic Algorithms}
+Genetic algorithms can use either both recombination and mutation or use them as mutually exclusive operations.
+
+\section{Example: One-Max}
+A simple binary problem: maximize \(f(x) = x_1 + x_2 + ... + x_n\) where \(x_i \in \{0, 1\}\).  The optimum \(x^* = [1 \ 1 \ 1 \ ... \ 1]\) gives \(f(x^*) = n\).
+\begin{itemize}
+    \item   Individual representation is an \(n\)-dimensional binary string.
+    \item  Fitness is the sum of ones.
+    \item   GA configuration is generational, with random initialization, roulette wheel selection, one-point crossover, and single-bit flip mutation with \(P_m = \frac{1}{n}\). The stopping condition is reaching the optimum.
+\end{itemize}
+
+\section{Example: Traveling Salesman Problem (TSP)}
+Given a set of cities with distances, find the shortest route that visits each city once and returns to the origin.
+\begin{itemize}
+    \item Individual representation is a permutation of symbols (each symbol = a city).
+     \item Fitness is the length of the route.
+     \item GA configuration is generational with random initialization, roulette wheel selection and the crossover operator is "Inver-Over," and a permutation mutation is used. The stopping condition is reaching the optimum.
+\end{itemize}
+
+\section{Why/How Genetic Algorithms Work: Schemata Theory}
+A schema is a set of individuals with some common genes. The order of a schema is the number of defined positions and the defining length is the distance between the first and last defined position. The Building Block Hypothesis suggests that GAs seek near-optimal performance through the combination of short, low-order, high-performance schemata, called "building blocks". Short, low-order schemata receive exponentially increasing trials in subsequent generations. This theory has less credit today than in previous decades.
+

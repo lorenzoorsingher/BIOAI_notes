@@ -1,0 +1,419 @@
+\section{Introduction}
+
+\subsection*{What is Intelligence?}
+The definition of intelligence is not straightforward and its meaning is not entirely clear. Etymologically, "intelligence" comes from the Latin "intus legere", meaning "to read inside things". Therefore, intelligence can be seen as the capability to\textbf{understand}. However, there's no objective way to check for understanding, as it's subjective. Instead, we assess intelligence by observing behavior. Intuitively, we can differentiate between intelligent and non-intelligent behaviours.
+
+\subsection*{What About Artificial (Machine) Intelligence (AI)?}
+A fundamental question is whether a machine can think. As with humans, we should look at the machine's behavior to assess its intelligence.  A pragmatic definition of artificial intelligence is the ability to make a choice from a set of options to achieve a specific objective. For example, finding the shortest path or designing an optimal engineering object.
+
+\subsection*{What is Artificial Intelligence?}
+A tentative definition of AI is: the ability to perform a choice (from a finite or infinite set of options) to achieve a certain objective.
+
+\section{The Classic Paradigm of AI}
+The classic paradigm of AI, from the 1950s to the 1980s, aimed to create intelligent machines. The goal was to replicate human cognition, such as reasoning, planning, and learning. However, this approach gradually moved away from biology, focusing instead on logic, optimal signal processing, data mining, and optimal control. This led to the neglect of the robustness of biological intelligence, such as autonomy, noise tolerance, embodiment, failure proofing, and adaptation.
+
+\section{The "Renaissance" of AI}
+Starting in the mid-1980s, AI experienced a "renaissance" where the objective was not just to mimic human capabilities but to surpass them. This led to the development of computational intelligence, bio-inspired algorithms, neural networks, and machine/deep learning.
+
+\section{Computational Intelligence}
+Computational intelligence is the study of adaptive mechanisms that enable intelligent behavior in complex and changing environments. It is also known as soft computing or natural computing. These mechanisms exhibit the ability to learn, adapt to new situations, generalize, abstract, discover, and associate.
+
+\section{Taxonomy of AI Fields}
+The field of Artificial Intelligence encompasses machine learning.  Machine learning includes neural networks, which lead to deep learning. Another overlapping area is computational intelligence and a subfield of this is\textbf{bio-inspired artificial intelligence}, which overlaps with biomimetics, bio-inspired engineering, bio-inspired robotics, and bio-inspired computing.
+
+\section{Examples of Biomimetics}
+Biomimetics involves creating devices and tools inspired by nature. Examples include:
+\begin{itemize}
+    \item Velcro, inspired by pollen.
+    \item Leonardo da Vinci's research on bird wings.
+    \item Bio-robotics inspired by lizards, geckos, and insects.
+\end{itemize}
+These examples show that solutions found in nature can inspire artificial solutions.
+
+\section{Bio-Inspired Artificial Intelligence}
+The main focus of this course will be on the computational aspects of bio-inspired AI, rather than the engineering aspects. The main areas in bio-inspired AI are evolutionary computation and swarm intelligence. There are also other important paradigms:
+\begin{itemize}
+    \item Neural Networks
+    \item Cellular Automata
+    \item Artificial Immune Systems
+    \item Pattern Formation Techniques
+    \item Epidemic Protocols
+    \item Artificial Life (ALife) studies
+\end{itemize}
+
+\subsection*{Why Study Evolutionary Computation and Swarm Intelligence?}
+These paradigms have the ability not only to learn, but also to innovate and create novel solutions. They are applicable to an infinitely vast range of problems. These methods are robust, general-purpose and have not been fully exploited yet. Evolutionary Computation, and to some extent, Swarm Intelligence, may be the next "big thing" in AI, similar to the rediscovery of neural networks. For example,  OpenAI published a paper in 2017 suggesting evolution strategies are a scalable alternative to reinforcement learning and in 2018, it was reported that evolutionary algorithms outperformed deep learning in video games.
+
+\section{Optimization}
+\subsection*{What is Optimization?}
+Optimization involves maximizing or minimizing a given objective function. A general optimization problem involves finding the optimum ($x^*$) of an objective function ($f(x)$), subject to constraints. Key elements:
+\begin{itemize}
+    \item Decision variables: $x = [x_1, x_2, ..., x_n]$
+    \item Objective function(s): $f(x)$
+    \item Decision/search space: D
+    \item Constraints: $g(x)$ and $h(x)$
+    \item Global optimum: $x^{**}$
+\end{itemize}
+Note that minimizing $f(x)$ is the same as maximizing $-f(x)$. Optimization is a fundamental concept and is present in many problems.
+
+\subsection*{Optimization is Everywhere}
+Optimization is applicable to diverse fields including:
+\begin{itemize}
+    \item Car design
+    \item Worker scheduling
+    \item Industrial planning
+    \item The Traveling Salesman Problem
+    \item Robot trajectory optimization
+    \item Portfolio optimization
+    \item A/B testing
+    \item Bug finding
+\end{itemize}
+\subsection*{Different Kinds of Optimization}
+Optimization problems can be classified into various types depending on the problem's characteristics:
+\begin{itemize}
+    \item  Continuous vs Combinatorial (Discrete) Optimization
+    \item  Linear vs Nonlinear Optimization
+    \item  Single vs Multi-Objective Optimization
+    \item  Constrained vs Unconstrained Optimization
+    \item  Stochastic/Dynamic vs Noiseless/Stationary Optimization
+\end{itemize}
+
+\subsection*{Classic Optimization Approaches}
+\begin{itemize}
+    \item  Analytical Approach: The function has an explicit analytical expression that is derivable over all variables. Calculus is used to find optima.
+    \item  Exact Methods: The function respects specific hypotheses (e.g., linear or quadratic) and converges to the exact solution after a finite number of steps.
+    \item  Approximate Iterative Methods: The function respects some hypotheses but requires an infinite number of steps. These methods can provide approximations of the optimum after a finite number of steps.
+\end{itemize}
+
+\subsection*{Local Optimization}
+The goal of local optimization is to find a local optimum, starting from an initial guess.
+\begin{itemize}
+    \item Gradient-based methods use the gradient or higher-level derivatives of the objective function. Examples include gradient descent, Newton methods, and quasi-Newton methods.
+    \item Gradient-free methods do not use derivatives; they use a heuristic method. Examples include Rosenbrock, Nelder-Mead, and Hooke-Jeeves. Heuristics, from the Greek "heuriskō" meaning "I find", involve generating and testing solutions to find an approximate solution.
+\end{itemize}
+These methods are used when classic methods fail or are too slow.
+
+\subsection*{Global Optimization}
+The goal of global optimization is to find the global optimum, which is a more complex task than local optimization.
+\begin{itemize}
+    \item Deterministic approaches include brute force (discretizing the search space and evaluating all points).
+    \item Stochastic approaches include random searches, starting from an initial point and perturbing it randomly.
+\end{itemize}
+
+\subsection*{Challenges in Optimization}
+Optimization problems can be easy to formulate but difficult to solve, especially in complex applications. This can be due to
+\begin{itemize}
+    \item High nonlinearities
+    \item High multimodality (many local optima)
+    \item Noisy objective functions
+    \item Approximated objective functions
+    \item Computationally expensive problems
+    \item Large-scale problems
+    \item Limited hardware
+\end{itemize}
+These challenges make it necessary to use more robust problem-solving techniques.
+
+\section{Metaheuristics}
+\subsection*{What are Metaheuristics?}
+Metaheuristics, from the Greek "meta heuriskō", meaning "I find beyond", are algorithms that do not require specific assumptions about the objective function. They are often considered as a "black-box" optimization. They are especially useful when the analytical expression of the objective function is not available or is very complex, e.g. multivariate, noisy, non-differentiable, non-continuous, or nonlinear.
+
+\subsection*{Computational Intelligence Optimization (CIO)}
+CIO is a subfield of Computational Intelligence that studies mathematical procedures to solve optimization problems, particularly where metaheuristics are the only option. Metaheuristics are stochastic optimization algorithms that are used as a last resort before using random or brute-force search. They are applied to problems where finding a good solution is difficult, but a grade can be given to any candidate solution.
+
+\subsection*{A (Possible) Taxonomy of Metaheuristics}
+Metaheuristics can be categorized based on:
+\begin{itemize}
+    \item Population vs trajectory-based
+    \item Nature-inspired methods or not
+    \item Dynamic vs static objective functions
+    \item Memory-based vs memory-less algorithms
+    \item Implicit, explicit, or direct metaheuristics
+\end{itemize}
+This course will focus on nature-inspired methods such as evolutionary algorithms and swarm intelligence techniques.
+
+\subsection*{Examples of Metaheuristics}
+Examples include
+\begin{itemize}
+    \item Simulated Annealing (SA)
+    \item Evolutionary Algorithms (EAs) (including Genetic Algorithms (GAs), Evolutionary Programming (EP), Evolution Strategies (ES))
+    \item Particle Swarm Optimization (PSO)
+    \item Ant Colony Optimization (ACO)
+    \item Bacterial Foraging Optimization (BFO)
+    \item Differential Evolution (DE)
+    \item Memetic Algorithms (MA)
+    \item Hybrid Methods
+\end{itemize}
+
+\subsection*{Criticism of Metaheuristics}
+There has been criticism regarding the excessive use of metaphors in metaheuristics, where new algorithms are based on metaphors without significant novelty. Many algorithms have been inspired by various animals and natural phenomena, leading to many similar techniques. However, the evolutionary metaphor and swarm intelligence are very useful and have led to new families of algorithms.
+
+\subsection*{No Free Lunch Theorems (NFLT)}
+NFLT states that for any pair of algorithms A and B, their performance over all possible problems is the same. This means that no single metaheuristic can solve all problems. It implies that every problem should be addressed with a proper algorithm that is tailored to the problem's features. There is no single "best" optimizer.
+
+\section{Natural Evolution}
+\subsection*{What is Evolution?}
+Biological systems result from an evolutionary process, where species originate from pre-existing types, with differences resulting from accumulated modifications over generations. The resulting biological systems are robust, complex, and adaptive.
+
+\subsection*{The "Four Pillars" of Evolution}
+The four pillars are:
+\begin{itemize}
+    \item  Population: A group of several individuals
+    \item  Diversity: Individuals have different characteristics due to mutations
+    \item  Heredity: Characteristics are transmitted over generations
+    \item  Selection: Individuals produce more offspring than the environment can support, and fitter individuals reproduce more
+\end{itemize}
+All species derive from a common ancestor.
+
+\subsection*{Evolution is NOT a Random Process}
+Randomness provides the material on which evolution acts. It is the result of two effects: variations (mostly random) and selection (mostly deterministic).
+
+\subsection*{Evolution is NOT a Directional Process}
+Humans or any other species are not the top of the evolutionary ladder. Evolution proceeds without a predetermined direction or goal. If there is no competition, there is no selection of the fittest. There can be an accumulation of changes with no cost or benefit, known as neutral evolution.
+
+\subsection*{Genotype vs. Phenotype}
+\begin{itemize}
+    \item  Genotype: The genetic material of an organism, transmitted during reproduction, is affected by mutations and crossover, and selection does not operate directly on it.
+    \item  Phenotype: The manifestation of an organism (appearance, behavior, etc.), affected by the environment, development, and learning, and selection operates on it.
+\end{itemize}
+
+\subsection*{DNA (Deoxyribonucleic Acid)}
+DNA is a long, twisted molecule composed of two complementary sequences of four nucleotides (A, T, C, G). A gene is a sequence of nucleotides that codes for a protein. Humans have 23 pairs of DNA molecules (chromosomes).
+
+\subsection*{Genes and Genome}
+The complete genetic material of an individual is called the genome.  Within a species, most of the genetic material is the same. The genome contains genic DNA (codes for proteins) and non-genic DNA (still under study). Genome size is constant within a species but varies across species and it is not related to phenotype complexity.
+
+\subsection*{From Genes to Proteins (Gene Expression)}
+Proteins define the type and function of cells. The sequence of nucleotides in DNA defines the type of protein. The expression of a gene into a protein is mediated by messenger RNA (mRNA). There is a one-way information flow from genotype to phenotype. Phenotypic traits (behavior/physical differences) affect responses to the environment, partly due to inheritance and partly due to development.
+
+\subsection*{Genotype-Phenotype Mapping}
+The genotype-phenotype mapping is complex:
+\begin{itemize}
+    \item One gene may affect many phenotypic traits (pleiotropy).
+    \item Many genes may affect one phenotypic trait (polygeny).
+\end{itemize}
+
+\subsection*{Darwin vs. Lamarck}
+\begin{itemize}
+    \item Darwinian Evolution: If phenotypic traits lead to higher reproduction and can be inherited, they will increase in subsequent generations.
+    \item Lamarckian Evolution: Acquired features can be inherited (partially incorrect, but has been revisited in light of phenotypic plasticity and epigenetics).
+\end{itemize}
+
+\subsection*{Genetic Mutations}
+Genetic mutations occur during cell replication and can be:
+\begin{itemize}
+    \item Catastrophic: Offspring is not viable (most likely).
+    \item Neutral: New feature does not influence fitness.
+    \item Advantageous: New feature leads to higher fitness.
+\end{itemize}
+Redundancy in the genetic code helps with error checking. Recombination (crossover) is a type of mutation that affects two homologous chromosomes.
+
+\subsection*{Adaptive Landscape Metaphor}
+A population with *n* phenotypic traits can be represented as existing in a *(n+1)* dimensional space, where the height corresponds to fitness. Each individual is a point in this landscape. A population can be seen as a "cloud" of points moving on the landscape as it evolves, with selection "pushing" it upwards.
+
+\subsection*{Genetic Drift}
+Genetic drift is the random variation in feature distribution arising from sampling errors. It can cause the population to slide over hills and leave local optima.
+
+\section{Evolutionary Computation}
+\subsection*{What is Evolutionary Computation?}
+Evolutionary Computation is a set of techniques that copy the process of natural evolution, also known as Evolutionary Algorithms or Artificial Evolution algorithms.
+
+\subsection*{Why Copying Natural Evolution?}
+\begin{itemize}
+    \item Nature has always been a source of inspiration for engineers and scientists.
+    \item Evolution is the best problem solver known in nature, creating the human brain.
+\end{itemize}
+
+\subsection*{What Can Evolutionary Computation Be Used For?}
+\begin{itemize}
+    \item Understand "real" evolution
+    \item Build evolutionary models (Artificial Life, or ALife)
+    \item Solve optimization problems
+\end{itemize}
+Time for thorough problem analysis decreases, while complexity of the problem increases, therefore robust problem-solving technology is needed.
+
+\subsection*{Similarities Between Natural and Artificial Evolution}
+\begin{itemize}
+    \item Individual: Encodes a potential solution to a problem, with a phenotype (computer program, object, etc.) and genotype (genetic representation of the phenotype).
+    \item Population: A set of individuals.
+    \item Diversity: A measure of how individuals differ in the population.
+    \item Selection: A mechanism to select individuals that "survive" and "reproduce".
+    \item Inheritance: A mechanism to transmit the properties of a solution.
+\end{itemize}
+
+\subsection*{Differences Between Natural and Artificial Evolution}
+\begin{itemize}
+    \item  Fitness: In artificial evolution, fitness is a measure of how good a solution is, while in natural evolution, it measures reproductive success.
+    \item  Selection: In artificial evolution, selection is based on fitness, while in nature it is based on competition and interactions with the environment.
+    \item  Generations are typically non-overlapping in artificial evolution, while they overlap in natural evolution.
+    \item Artificial evolution has expected improvement between the initial and final solutions, whereas natural evolution is not explicitly an optimization process.
+\end{itemize}
+However, when variations accumulate in a specific direction, natural evolution resembles an optimization process.
+
+\subsection*{A Bit of History}
+\begin{itemize}
+    \item  1948: Turing mentions "genetical or evolutionary search".
+    \item 1954: Barricelli publishes his paper "Esempi Numerici di processi di evoluzione".
+    \item 1960s: Real development of the field starts.
+\end{itemize}
+
+\subsection*{One Framework, Different Paradigms}
+\begin{itemize}
+    \item Evolutionary Programming (EP)
+    \item Evolution Strategies (ES)
+    \item Genetic Algorithm (GA)
+    \item Steady-State Evolution
+    \item Cultural evolution, or Memetic Algorithms (MA)
+    \item Genetic Programming (GP)
+    \item Differential Evolution (DE)
+    \item Estimation of Distribution Algorithm (EDA)
+    \item Island Models
+     \item Covariance Matrix Adaptation Evolution Strategy (CMA-ES)
+    \item Non-Dominated Sorting Genetic Algorithm: (NSGA-2)
+\end{itemize}
+
+\subsection*{Evolutionary Algorithm}
+An evolutionary algorithm is a stochastic population-based metaheuristic that uses mechanisms inspired by biological evolution:
+\begin{itemize}
+    \item Reproduction
+    \item Inheritance
+    \item Mutation
+    \item Selection
+\end{itemize}
+Evolutionary algorithms require many simulations and inexpensive computer technology to run them.
+
+\subsection*{The Key Elements: Individual and Fitness}
+An individual encodes a potential solution (e.g., a list of numbers, cities, bit strings). Each individual has a fitness, measuring how good the solution is.
+
+\subsection*{Why Evolutionary Algorithms Work}
+Classic optimization algorithms (local search methods) work on a single solution, perturbed by some logic. They are good at exploitation but may miss the global optimum and are not parallelizable. Evolutionary algorithms, on the other hand, are population-based and inherently parallelizable. They are good at both exploitation and exploration and each solution can be perturbed differently, allowing for different search perspectives. Interactions among solutions can be beneficial.
+
+\subsection*{Applicability}
+Evolutionary algorithms are used in a huge number of problems. Biological inspiration is essential, but often distorted. Different problems require different algorithms, and knowledge of the problem domain can help choose or assemble the best algorithm. While EAs are general-purpose, their performance depends heavily on the problem, and different EAs may perform differently on the same problem.
+
+\subsection*{Some Applications}
+\begin{itemize}
+    \item  Parameters optimization
+    \item  Finance/portfolio optimization
+    \item  Model and neural network training
+    \item  Forecast
+    \item  Scheduling
+    \item  Telecom/Networking
+    \item CAD/CAE problems
+    \item  Database/Data mining
+    \item Bioinformatics
+    \item Bug identification
+    \item Art
+    \item ALife studies
+\end{itemize}
+CAD/CAE problems are computationally intensive with unknown fitness landscapes, vast infeasible regions, nonlinear constraints, and practical limitations.
+
+\section{Swarm Intelligence}
+\subsection*{Imagine a Treasure Hunt Game}
+Swarm intelligence can be understood through a treasure hunt analogy: a group of friends searching for treasure, using metal detectors, communicating with neighbors, and sharing rewards.
+
+\subsection*{What is Swarm Intelligence?}
+Swarm intelligence is inspired by the collective behavior of social animals, where they perform tasks as a group that they cannot accomplish alone.  A swarm is a group of simple agents that communicate, directly or indirectly, by changing their state or acting on their environment. Swarm intelligence is the property where local interactions of simple agents cause coherent global patterns to emerge. Main principles are that agents act on local information and cooperate using local information. Information propagates through the swarm, leading to distributed collective problem-solving.
+
+\subsection*{Emergent Behavior (Without Leader)}
+Examples in nature include:
+\begin{itemize}
+    \item  Termites building large nests
+    \item  Ants dynamically allocating tasks and foraging via trail-following
+    \item  Bees communicating with the "waggle dance" for optimal foraging
+    \item Birds in a flock and fishes in a school self-organizing
+    \item Lions exhibiting hunting strategies
+     \item Bacteria communicating using molecules
+    \item Slime molds aggregating to form a mobile slug
+\end{itemize}
+
+\subsection*{Emergent Behavior (With Leader)}
+In some cases, there is a leader and more restrictive rules on relative motion, but individuals still use local information to decide how to move. Examples include herding, V formation, and processions.
+
+\subsection*{Emergent Behavior (What About Humans?)}
+The "wisdom of the crowd" is an example of emergent behavior, as studied by J. Surowiecki.
+
+\section{Computational Swarm Intelligence}
+\subsection*{What is (Computational) Swarm Intelligence?}
+Computational swarm intelligence refers to algorithmic models of swarm intelligence behavior in nature and groups of agents.
+
+\subsection*{Main Principles}
+\begin{itemize}
+    \item Unity is strength: The swarm performs tasks that a single individual cannot.
+    \item Multiplicity/resilience: Swarms are composed of many individuals, which means it is resilient to individual loss or mistakes.
+    \item Locality/simplicity: Individuals use only local information and perform simple actions, with complexity emerging from interactions.
+\end{itemize}
+
+\subsection*{Challenges}
+\begin{itemize}
+    \item  Finding individual behavioral rules that result in desired swarm behavior.
+     \item Ensuring the emergent behavior is stable.
+\end{itemize}
+
+\subsection*{Computational Swarm Intelligence Models}
+\begin{itemize}
+    \item Virtual models: Usually optimization algorithms, like Particle Swarm Optimization (PSO) and Ant Colony Optimization (ACO), also used for multi-agent simulations.
+    \item  Embodied models: Implemented in hardware, such as robots or network nodes.
+\end{itemize}
+Main features include population-based, where each individual changes its state according to strategies that use information from neighboring individuals.
+
+\subsection*{Applications}
+\begin{itemize}
+    \item  Optimization
+    \item Multi-agent or crowd simulations
+    \item Coordinated robots/drones
+    \item Distributed control systems
+     \item Distribution systems
+    \item Telecommunication networks
+    \item Mobile and pervasive computing
+    \item Social networks
+\end{itemize}
+
+\subsection*{BOIDS}
+BOIDS (Bird-oid objects) is an example of computational swarm intelligence that simulates flocking behavior. Each boid perceives the angle and distance of its neighbors, and follows three simple rules:
+\begin{enumerate}
+    \item Separation: Maintain a given distance from other boids
+    \item Cohesion: Move towards the center of mass of neighboring boids
+    \item Alignment: Align its angle with those of neighboring boids
+\end{enumerate}
+
+\subsection*{Particle Swarm Optimization (PSO)}
+PSO mimics a group of birds searching for food, where each place in the environment has an associated reward.  Each particle remembers its most successful place visited and gets information from its neighbors. In standard PSO, a swarm of particles is initialized with random positions and velocities. At each step, particles update their velocities ($v'$) using the formula:
+$$v' = \omega v + \phi_1 U_1(y - x) + \phi_2 U_2(z-x)$$
+where:
+\begin{itemize}
+    \item x and v are the particle’s current position and velocity, respectively
+    \item z and y are the neighborhood and focal particle’s best position, respectively
+    \item $\omega$ is the inertia (weighs the current velocity)
+    \item $\phi_1$ is the learning rate for the personal influence
+    \item  $\phi_2$ is the learning rate for the social influence
+    \item $U_1$ and $U_2$ are uniform random numbers in
+\end{itemize}
+Then, each particle updates its position: $x' = x + v'$. The particle's best position (y) and neighborhood's best position (z) are updated if there is improvement, and this process is repeated until a given stopping condition is met.
+
+\subsection*{Ant Colony Optimization (ACO)}
+ACO mimics the navigation strategy used by foraging ants. Initially, ants move at random (exploration), then deposit pheromones to reinforce good paths. Pheromones along a trail evaporate if not followed, and ants communicate indirectly with each other via the environment (stigmergy). ACO is typically applied to the Traveling Salesman Problem (TSP) and other combinatorial problems. ACO can find the best solution on small problems and good solutions on large ones. It can also operate on dynamic problems that require fast rerouting.
+
+\subsection*{Other Paradigms/Metaphors}
+Other paradigms inspired by nature include:
+\begin{itemize}
+    \item Harmony Search
+    \item Artificial Bee Colony Algorithm
+    \item Bees Algorithm
+    \item Glowworm Swarm Optimization
+    \item Shuffled Frog Leaping Algorithm
+    \item Imperialist Competitive Algorithm
+    \item River Formation Dynamics
+    \item Intelligent Water Drops Algorithm
+    \item Gravitational Search Algorithm
+    \item Cuckoo Search
+    \item Bat Algorithm
+    \item Spiral Optimization (SPO) Algorithm
+    \item Flower Pollination Algorithm
+    \item Cuttlefish Optimization Algorithm
+    \item Duelist Algorithm
+    \item Killer Whale Algorithm
+    \item Rain Water Algorithm
+    \item Mass and Energy Balances Algorithm
+\end{itemize}
+It is important to remember the criticism of metaphors in metaheuristics.
+

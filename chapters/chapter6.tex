@@ -1,0 +1,176 @@
+\textbf{Swarm intelligence} is a field of study that draws inspiration from the collective behaviour of social animals such as bird flocks, fish schools, or ant colonies, to solve complex problems. This lecture focuses on Particle Swarm Optimization (PSO) as a primary example of swarm intelligence.
+
+\section{Particle Swarm Optimization}
+\subsection*{A Treasure Hunt Game}
+To introduce the concept of PSO, the lecture uses an analogy of a treasure hunt game.
+
+\begin{itemize}
+    \item \textbf{Scenario:} Imagine a group of friends searching for a treasure on an island.
+    \item \textbf{Tools:} Each friend has a metal detector and can access information about the signal strength and their neighbours' positions.
+    \item \textbf{Goal:} The goal is to find the treasure, or at least get close to it.
+    \item \textbf{Reward Sharing:} All participants who take part in the search will be rewarded, with the person who finds the treasure receiving a higher reward. The rest will be rewarded based on their distance from the treasure at the time when the treasure is found.
+\end{itemize}
+
+The key idea is that individuals (treasure hunters) share information and learn from each other to converge to the solution (treasure location) more effectively. This highlights the benefit of social information in problem-solving, especially for difficult problems.
+
+\subsection*{BOIDS}
+As a first historical example of Computational Swarm Intelligence, the lecture introduces BOIDS. BOIDS simulates the flocking behavior of birds using simple agents called “boids”. Each boid perceives the angle and distance of its neighbours.
+
+\textbf{Reynolds Flocking Rules}: These rules model the complex behaviour of flocks based on three simple rules.
+
+\begin{enumerate}
+    \item \textbf{Separation:} A boid maintains a certain distance from other boids.
+    \item \textbf{Cohesion:} A boid moves toward the centre of mass of its neighbouring boids.
+    \item \textbf{Alignment:} A boid aligns its direction with those of its neighbouring boids.
+\end{enumerate}
+By combining these simple rules, complex and stable behaviours emerge, such as flocking and obstacle avoidance. It's important to note that BOIDS was not designed for optimization but for simulating swarm behaviour.
+
+\subsection*{Generalities of Particle Swarm Optimization}
+\textbf{Biological Inspiration:} PSO is inspired by the foraging behaviour of bird flocks. Birds do not know the location of the food, but each bird can tell its neighbours how much food is in its current location, and each bird remembers its location where it found the highest concentration of food so far.
+
+\textbf{Strategies in PSO}: Birds combine three strategies to find food efficiently:
+
+\begin{enumerate}
+    \item \textbf{Brave:} Keep flying in the same direction.
+    \item \textbf{Conservative:} Fly back towards the best previous position.
+    \item \textbf{Swarm:} Move towards the best neighbour.
+\end{enumerate}
+\textbf{From Birds to Particles:} In PSO, birds are abstracted as "particles," where the food concentration is analogous to the fitness landscape of the optimization problem. The position of the birds corresponds to solutions for that problem.
+
+\subsection*{Particle Definition}
+A particle \textbf{p} is described by \textbf{<x, v, f>}, where:
+
+\begin{itemize}
+    \item \textbf{x}: Represents the particle’s position, which is a candidate solution, equivalent to the genotype in Evolutionary Algorithms.
+    \item \textbf{v}: Represents the particle’s velocity, used to move or perturb the solution.
+    \item \textbf{f(x)}: Represents the particle’s performance, which is the value of the objective function at that position (can be multi-objective).
+\end{itemize}
+
+Particles also have perception; they perceive the performance and positions of neighbouring particles and know the best particle among their neighbours (z). Additionally, particles remember their own best position where they obtained the best performance (y).
+Each particle maintains a memory of its own best position (y), where it found the highest fitness value, combining local information with that from its neighbours.
+
+\subsection*{Neighborhood Definitions}
+Neighborhoods can be defined at different levels:
+\begin{itemize}
+    \item \textbf{Global:} The best individual in the neighbourhood is the global best in the entire swarm. In this case, all particles consider the best of the entire swarm as its neighbour best and so the global best (z) is the same for all particles.
+    \item \textbf{Distance-based:} Based on a proximity metric such as Euclidean distance between the particles' positions, using a given neighbourhood radius. Particles within this radius are considered neighbours.
+    \item \textbf{List-based:} Based on a predetermined topology arranging the solution indexes according to some order/structure and a given neighbourhood size. For example, a ring structure where each particle only sees the particles with adjacent indexes or a star structure where every node is connected to all other nodes.
+\end{itemize}
+Different topological structures can be used to define social networks such as Ring, Star, Von Neumann, Pyramid, Clusters and Wheel.
+
+\textbf{Dynamic Neighbourhoods}: Overlapping neighbourhoods are also possible, facilitating information exchange. Growing neighbourhoods start with a ring topology and grow toward a star topology, adding particles based on a scaled Euclidean distance. This allows for a transition from exploration to exploitation as the search progresses.
+
+\textbf{Hypercube Structure}: This structure is used for binary-valued problems. Particles are defined as neighbours if the Hamming distance between the bit representation of their indices is one. The total number of particles must be a power of two, and the neighbourhood has \textbf{n} particles. Each neighborhood has exactly \textbf{n} particles, the maximum distance between any two particles is exactly \textbf{n}, and if particles \textbf{i} and \textbf{j} are neighbours, then \textbf{i} and \textbf{j} will have no other neighbours in common.
+
+\subsection*{Main Parameters}
+Key parameters in PSO include:
+
+\begin{itemize}
+    \item \textbf{Swarm Size:} The number of particles, typically 20 for problems with dimensionality 2-200.
+    \item \textbf{Neighbourhood Size:} Typically 3 to 5, otherwise a global neighbourhood is used.
+    \item \textbf{Velocity Update Factors}: Depend on the specific PSO implementation.
+\end{itemize}
+
+\subsection*{Standard PSO}
+The standard PSO algorithm is mostly used for continuous optimisation:
+\begin{enumerate}
+    \item A swarm of particles is initialized with random positions and velocities.
+    \item At each step, every particle updates its velocity using the rule:
+    $$ v' = w \cdot v + \Phi_1 U_1 \cdot (y - x) + \Phi_2 U_2 \cdot (z - x) $$
+    \item Then, each particle updates its position: $$ x' = x + v' $$
+    \item If the performance improves, the personal best position (\textbf{y}) is updated, and, where appropriate, the neighbourhood best position (\textbf{z}) is updated.
+\end{enumerate}
+
+Where:
+\begin{itemize}
+    \item \textbf{x} and \textbf{v}: are the current position and velocity of the particle, respectively.
+    \item \textbf{y} and \textbf{z}: are the personal and social/global best positions, respectively.
+    \item \textbf{w}: is the inertia (weighs the current velocity).
+    \item \textbf{$\Phi_1$}, \textbf{$\Phi_2$}: are acceleration coefficients/learning rates (cognitive and social, respectively).
+    \item \textbf{$U_1$} and \textbf{$U_2$}: are uniform random numbers in the range.
+\end{itemize}
+
+\subsection*{Velocity Components}
+The velocity update rule comprises three key components:
+
+\begin{itemize}
+    \item \textbf{Inertia Velocity}: $w \cdot v$ represents the momentum or memory of the previous flight direction. It prevents the particle from drastically changing its direction.
+    \item \textbf{Cognitive Velocity}: $\Phi_1 U_1 \cdot (y - x)$ quantifies performance relative to past performance, using the memory of the previous best position. It represents a form of "nostalgia" that pulls the particle back to it's best position.
+    \item \textbf{Social Velocity}: $\Phi_2 U_2 \cdot (z - x)$ quantifies performance relative to neighbours. It represents a form of "envy" that pulls the particle toward the best neighbour's position.
+\end{itemize}
+
+\subsection*{Velocity Models}
+Two simplified velocity models can be considered:
+
+\begin{itemize}
+    \item \textbf{Cognition-only model}: $v' = w \cdot v + \Phi_1 U_1 \cdot (y - x)$. In this model particles are independent hill-climbers, performing a local search.
+    \item \textbf{Social-only model}: $v' = w \cdot v + \Phi_2 U_2 \cdot (z - x)$. In this model, the swarm acts as one stochastic hill-climber.
+\end{itemize}
+
+\subsection*{Geometric Interpretation of Velocity}
+The velocity update can be visualised as the summation of vectors representing the inertia, cognitive, and social components. The new position is obtained by adding the updated velocity to the current position.
+
+\subsection*{Acceleration Coefficient Parameterisation}
+The choice of $\Phi_1$ and $\Phi_2$ affects the behaviour of the particles:
+\begin{itemize}
+    \item \textbf{$\Phi_1$ = $\Phi_2$ = 0}: Particles move only based on inertia (no learning).
+    \item \textbf{$\Phi_1$ > 0, $\Phi_2$ = 0}: Cognition-only model.
+    \item \textbf{$\Phi_1$ = 0, $\Phi_2$ > 0}: Social-only model.
+    \item \textbf{$\Phi_1$ = $\Phi_2$ > 0}: Particles are attracted towards the average of \textbf{y} and \textbf{z}.
+\end{itemize}
+Additional considerations:
+\begin{itemize}
+    \item \textbf{$\Phi_1 < \Phi_2$}: More beneficial for unimodal problems where the algorithm benefits from prioritising the social component.
+    \item \textbf{$\Phi_1 > \Phi_2$}: More beneficial for multimodal problems where it is better to favour exploration using the cognitive component.
+    \item \textbf{Low $\Phi_1$ and $\Phi_2$}: Leads to smooth particle trajectories.
+    \item \textbf{High $\Phi_1$ and $\Phi_2$}: Results in higher acceleration and abrupt movements.
+\end{itemize}
+
+\subsection*{Convergence Conditions}
+The theoretical condition for convergence depends on \textbf{w}, $\Phi_1$ and $\Phi_2$: $$1 > w > \frac{1}{2}(\Phi_1 + \Phi_2) - 1 \ge 0$$.
+
+\subsection*{PSO in Action}
+The lecture demonstrates how PSO operates on a multimodal problem where particles converge to the area with the lowest objective function value. The algorithm is usually very efficient in finding the optimum, converging quickly.
+
+\subsection*{Implementation Notes}
+The velocity update rule can be applied in two ways:
+\begin{itemize}
+    \item \textbf{Synchronous}: Personal and social bests are updated after all particle positions are updated, this leads to slower feedback (better for global best).
+    \item \textbf{Asynchronous}: Personal and social bests are updated after each particle position update, this provides immediate feedback about the best regions of the search space (better for distance/list-based best).
+\end{itemize}
+
+\subsection*{Similarities and Differences Between PSO and EAs}
+\textbf{Similarities}: Both PSO and Evolutionary Algorithms (EAs) are population-based algorithms. PSO uses two memory structures: one for personal best solutions and another for current positions, which is similar to having two populations in EAs. In PSO, particle positions "evolve" over time.
+
+\textbf{Differences}: The main difference lies in the logic of selection. In EAs, selection is fitness-based and takes into account the entire population, while in PSO, selection is done by considering the solution before and after the perturbation (personal best is updated only in case of improvement). This is referred to as one-to-one spawning.
+
+\section{PSO Variants}
+Over the past 20 years, numerous PSO variants have been proposed. These variants generally focus on:
+
+\begin{itemize}
+    \item Modifications to the velocity update rule.
+    \item Modifications to the algorithm logic.
+\end{itemize}
+
+The main objectives of these variants are to improve convergence speed, quality of solutions, and the ability to converge.
+
+\subsection*{Modifications of Velocity Update Rule}
+\begin{itemize}
+    \item \textbf{Dynamic Inertia}: The inertia weight \textbf{w} is updated dynamically to allow transition from exploration to exploitation. \textbf{w} \textgreater 1, will lead to higher velocities, which can be used for exploration. When 0 \textless \textbf{w} \textless 1 particles decelerate leading to more exploitation. Various methods for dynamic inertia include, random sampling from a Gaussian distribution, decaying w linearly at each iteration or multiplying w by a constant.
+    \item \textbf{Velocity Clamping}: The velocity \textbf{v} is limited to control exploration. Velocity clamping involves saturating the velocity to a given threshold \textbf{Vmax} to control global exploration.
+    \item \textbf{Adaptive Acceleration Coefficients}: $\Phi_1$ and $\Phi_2$ are updated dynamically to allow transition from exploration to exploitation. Typically $\Phi_1$ is decreased over time while $\Phi_2$ is increased to promote exploration at the beginning of the search and exploitation towards the end.
+    \item \textbf{Fully Informed PSO}: The velocity equation is modified such that each particle is influenced by the successes of all its neighbours, using a weighted sum of their best positions. This allows for more information to be used, and influence is proportional to the particle’s fitness.
+    \item \textbf{Prey-Predator PSO}: Introduces "virtual" particles (predators) that force exploration. Prey particles are repelled by predators which is achieved by modifying the velocity rule to increase the velocity exponentially as the distance to a predator decreases.
+    \item \textbf{Comprehensive Learning PSO (CLPSO)}: For each variable, it replaces probabilistically the personal best with a "functional local best" using a tournament selection between two random particles.
+\end{itemize}
+
+\subsection*{Modifications of Algorithm Logics}
+\begin{itemize}
+    \item \textbf{Guaranteed Convergence PSO (GPSO)}: Forces global best update in case of null velocities. It addresses stagnation by perturbing the global best position when \textbf{x=y=z} to ensure the particles keep moving and searching.
+    \item \textbf{Multi-start PSO}: Injects randomness into the particles' positions to increase diversity. This can help the algorithm escape local optima, but it needs a careful balance of randomness and convergence.
+    \item \textbf{Cooperatively Coevolving Particle Swarms (CCPSO2)}: Randomly divides the problem into \textbf{n} separate sub-problems and does not use velocity update, but samples solutions from a Gaussian or Cauchy distribution. This approach is often used for large scale problems, and each sub-swarm acts on a random subset of variables. The context vector is created by concatenating the global best of each subswarm to evaluate the solution and each sub-PSO cooperates with the best from the other swarms.
+\end{itemize}
+
+\section{Recap of PSO Variants}
+A table is included in the slides summarising the PSO variants and their descriptions. The lecture highlights that this area of research is still active and new variants are devised each year.
+

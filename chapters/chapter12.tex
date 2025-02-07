@@ -1,0 +1,236 @@
+\section{Applications of Evolutionary Algorithms}
+
+\subsection*{Case Study 1: NASA ST5 Antenna Design by EA}
+The NASA ST5 mission aimed to measure the effect of solar activity on the Earth's magnetosphere, using three nanosatellites (50 cm each). The challenge was to design an optimal antenna for these satellites to send data to a ground station.
+\subsubsection*{Problem}
+Designing the antenna manually was particularly difficult, hence an evolutionary algorithm was used.
+\subsubsection*{Experimental/Algorithmic Setup}
+A tree-based encoding was used, allowing for the development of a 3D structure resembling a tree. The function set included a forward step and rotations along the x, y, and z axes. The terminal set defined the geometrical parameters of the antenna.
+\begin{itemize}
+    \item Function Set: \{$f$ = forward(length, radius), $r_{x/y/z}$ = rotate x/y/z\}
+    \item Terminal Set: \{length, radius, x, y, z\}
+\end{itemize}
+Each function node had a constraint of a maximum of three branches.
+\subsubsection*{Experimental Results}
+The fitness of the antenna designs were evaluated in simulation, and the best design was built and tested in an anechoic chamber. The evolutionary algorithm yielded an unconventional design that engineers had not conceived of, demonstrating how these algorithms can produce unexpected solutions.
+
+\subsection*{Case Study 2: Automatic Design of Industrial Controllers by EA}
+Evolutionary algorithms are also used in the automatic design of industrial controllers, such as PID controllers.
+\subsubsection*{Problem}
+Given a system, the goal is to design an optimal controller that satisfies user-defined requirements.
+\subsubsection*{Experimental/Algorithmic Setup}
+Online optimisation is achieved using a hardware-in-the-loop with a steady-state EA. The integral absolute error (IAE) is used as a fitness function to minimize the error between the actual output and the reference point.
+\subsubsection*{Key Takeaway}
+EAs can optimize controller parameters, even with hardware-in-the-loop, but system stability must be ensured.
+
+\subsection*{Case Study 3: Job Shop Scheduling Problem by EA}
+The job shop scheduling problem (JSSP) is another area where evolutionary algorithms are applied.
+\subsubsection*{Problem}
+The goal is to schedule jobs on machines to minimise the total duration, given constraints such as which machines can perform which operations and the order of operations.
+\begin{itemize}
+    \item $J$ is a set of jobs.
+    \item $O$ is a set of operations.
+    \item $M$ is a set of machines.
+    \item $Able \subseteq O \times M$ defines which machines can perform which operations.
+    \item $Pre \subseteq O \times O$ defines which operations should precede others.
+    \item $Dur: O \times M \rightarrow R$ defines the duration of operation $o \in O$ on machine $m \in M$
+\end{itemize}
+\subsubsection*{Experimental/Algorithmic Setup}
+Individuals are represented as permutations of operations, decoded into schedules using a decoding procedure that takes the first operation, looks up its machine, and assigns the earliest possible starting time subject to machine occupation and precedence relations.
+\subsubsection*{Fitness Evaluation}
+The fitness of a permutation is the duration of the corresponding schedule. Genetic algorithms are well-suited for this combinatorial problem, often combined with heuristic techniques.
+\subsubsection*{Key Takeaway}
+EAs can efficiently find optimal or near-optimal solutions for complex scheduling problems.
+
+\subsection*{Case Study 4: Drift Correction in Electronic Noses by ES}
+Electronic noses use arrays of gas/chemical sensors to mimic human olfaction.
+\subsubsection*{Problem}
+Sensors are prone to drift due to changes in sensitivity, environmental factors, and degradation. This drift must be corrected for proper compound classification.
+\subsubsection*{Experimental/Algorithmic Setup}
+Evolution strategies (ES) are used to tune the parameters of the Pattern Recognition module (PARC). This optimisation corrects drift and improves separation among odor classes.
+\subsubsection*{Key Takeaway}
+EAs can be used to dynamically correct sensor drift, enhancing the accuracy of pattern recognition systems.
+
+\subsection*{Case Study 5: Evolutionary Electronics}
+Evolutionary electronics (EE) uses evolutionary techniques to design and optimise electronic circuits.
+\subsubsection*{Possibilities}
+\begin{itemize}
+    \item Evolution of parameters (sizing) with a fixed topology.
+    \item Evolution of both parameters and circuit topology.
+    \item Placement and routing of devices.
+\end{itemize}
+\subsubsection*{Challenges}
+Designed circuits must be robust and perform correctly under various conditions, which requires extensive verification. The evolutionary process can yield unconventional circuits that are difficult to understand and verify.
+\subsubsection*{Analog vs Digital Design}
+\begin{itemize}
+    \item Analog: Functionality is determined by connectivity and circuit parameters, which are mostly continuous. Genetic representations include schematics, configuration bits, and trees.
+    \item Digital: Functionality is determined by connectivity, with few circuit parameters. The search space is discontinuous. Genetic representations include schematics, configuration bits, and truth tables.
+\end{itemize}
+\subsubsection*{Extrinsic vs Intrinsic Design}
+\begin{itemize}
+    \item Extrinsic: Each circuit is simulated to assess performance. This method is safe but the simulation is an approximation.
+    \item Intrinsic: Each circuit is physically implemented and tested. This method is accurate but has physical constraints and potential for damage.
+\end{itemize}
+\subsubsection*{Examples}
+Examples include the evolution of an inverter with bipolar transistors and the evolution of a robot controller.
+\subsubsection*{Key Takeaway}
+EAs can automate and optimise electronic circuit design, but require careful validation of the results.
+
+\subsection*{Case Study 6: Cell Phone Software Validation by EA}
+EAs can be used to find bugs in software.
+\subsubsection*{Problem}
+The goal is to find a sequence of operations that causes incorrect behavior in cell phones, such as excessive power consumption in deep sleep. This is a "needle in the haystack" problem.
+\subsubsection*{Motivation}
+Increased complexity of cell phones, unreliable integration, and fast time-to-market often lead to undiscovered bugs.
+\subsubsection*{Experimental/Algorithmic Setup}
+The entire system is modeled as a Finite State Machine (FSM), reconstructed from debug log messages. The fitness is based on the number of state transitions, which correlates with power consumption.
+\subsubsection*{Experimental Results}
+This approach identified two power-related bugs that had been missed by previous testing, as well as an interface bug.
+\subsubsection*{Key Takeaway}
+EAs are useful in finding corner cases and software bugs that traditional methods may miss.
+
+\subsection*{Case Study 7: Network Protocol Verification in WSN by EA}
+EAs can be used to verify network protocols in Wireless Sensor Networks (WSN).
+\subsubsection*{Problem}
+The goal is to quantify the worst-case network behaviour at protocol design time, such as energy consumption and latency.
+\subsubsection*{Limitations of Traditional Testing}
+Random testing, lab testing, and formal software verification may not always be suitable.
+\subsubsection*{Experimental/Algorithmic Setup}
+Populations of candidate topologies are simulated and evaluated for network traffic. An evolutionary algorithm is used to iteratively generate network topologies where traffic is maximised.
+\subsubsection*{Experimental Results}
+Novel topological features were discovered that correlate with high traffic and energy consumption. These features can be used as predictive metrics.
+\subsubsection*{Key Takeaway}
+EAs can effectively stress-test network protocols and identify critical network topologies.
+\subsubsection*{Algorithmic details}
+The evolutionary framework uses $\mu$GP coupled with the TOSSIM network simulator. Individual representation is an asymmetric matrix of link signal strengths. Individual fitness is determined by the max or sum of network packets generated by nodes. A multi-objective approach is also possible.
+
+\subsection*{Case Studies 8-10}
+\begin{itemize}
+    \item \textbf{Influence Maximisation in Social Networks}: EAs are used to identify the most influential nodes in social networks. This is done by modelling the propagation of information from one node to another. EAs can be used to optimise marketing or political campaigns.
+    \item \textbf{Security Assessment \& Attack Simulations in Ad-Hoc Networks}: EAs are used to simulate attacks and assess security vulnerabilities in ad-hoc networks, by injecting malicious nodes into the network to determine how much they can decrease the data delivery rate.
+   \item \textbf{Co-evolution of Sensor Systems}: EAs are used to develop swarms of passive sensor agents for exploring inaccessible environments, co-evolving the hardware and software and the model of the environment.
+\end{itemize}
+
+\subsection*{Use of EAs by Tech Giants}
+Major tech companies such as Facebook and Google use evolutionary algorithms for various purposes. For example, Facebook uses EAs to find bugs in Android devices. Google uses evolutionary computation in its AutoML tool, to automatically design machine learning algorithms.
+
+\subsection*{Commercial and Open-Source Software}
+\begin{itemize}
+    \item  Commercial software includes modeFRONTIER, Isight, Kimeme, MATLAB (Genetic Toolbox), and Nexus. These are used for CAD/CAE applications but often have closed-source algorithms that cannot be easily modified.
+    \item Open-source software includes inspyred, deap, peas, jgap, jmetal, and moeaframework. These are used for rapid prototyping and research and can be modified but require algorithmic expertise.
+\end{itemize}
+
+\section{Recent Trends in Evolutionary Computation}
+\subsection*{Parameter Control}
+Metaheuristics depend on parameters, and controlling these is crucial for performance.
+\subsubsection*{Parameter Tuning}
+Parameter tuning involves testing different sets of parameters before the main run to find optimal values, but it is time-consuming and may not always be the best option. A hyper-heuristic is when an EA optimises the parameters of another EA, although this approach is computationally expensive.
+\subsubsection*{Parameter Control Strategies}
+\begin{itemize}
+    \item Deterministic: Parameter changes are based on time or number of evaluations.
+    \item Adaptive: Parameters are changed using feedback from the search process, such as the one-fifth rule in evolution strategies.
+    \item Self-adaptive: Parameters are encoded in chromosomes and evolve through natural selection.
+\end{itemize}
+\subsubsection*{Trigger Conditions for Parameter Changes}
+These can be based on:
+\begin{itemize}
+    \item Time or number of evaluations (deterministic).
+    \item Population statistics (adaptive), such as diversity or gene distribution.
+    \item Relative fitness of individuals created with given parameter values (adaptive or self-adaptive).
+\end{itemize}
+\subsubsection*{Key Takeaway}
+Finding optimal parameter control strategies can be as challenging as optimising parameters themselves.
+
+\subsection*{Memetic Computing}
+Memetic computing combines evolutionary algorithms with local search or problem-specific operators to improve exploration/exploitation balance.
+\subsubsection*{Motivation}
+EAs are good at solving a wide range of problems, but in some cases the exploration/exploitation balance may not be enough to obtain satisfactory results.
+\subsubsection*{Memetic Algorithms}
+\begin{itemize}
+    \item  Hybrid GAs, also referred to as Baldwinian/Lamarckian GAs.
+    \item EAs + Local Search.
+    \item  EAs incorporating "intelligent" (ad-hoc) initialization, crossover/mutation, and/or problem-specific operators.
+\end{itemize}
+\subsubsection*{Concept of Memes}
+Memes, like genes, are units of cultural transmission. In MAs, memes are strategies for improving solutions.
+\subsubsection*{Algorithmic Details}
+Local search can be deterministic or stochastic and gradient based or gradient free. A pool of multiple local search algorithms can be used (Multi-Meme Algorithms). Coordination between local search and EA is crucial.
+\subsubsection*{Approaches to Coordination}
+\begin{itemize}
+    \item  Adaptive MAs: Local search is controlled during evolution by feedback from the search process.
+     \item Self-Adaptive MAs: Adaptive rules are encoded in the genotype of each individual.
+    \item Co-evolutionary MAs: Two populations of solutions and operators co-evolve.
+\end{itemize}
+\subsubsection*{Intelligent Initialisation}
+Instead of random sampling, custom generators (e.g., orthogonal arrays) can be used, but this might decrease diversity.
+\subsubsection*{Key Takeaway}
+Memetic computing enhances EA performance by incorporating problem-specific knowledge and local search techniques.
+
+\subsection*{Island Models and Spatial Distribution}
+These methods aim to preserve diversity in the population for multimodal optimization problems.
+\subsubsection*{Motivation}
+Most optimisation problems have more than one local optimum, but a finite population with global recombination and selection will eventually converge to one optimum.
+\subsubsection*{Island Model}
+Multiple populations (islands) are run in parallel, with occasional migration between islands. Different operators can be used on each island.
+\subsubsection*{Migration Frequency}
+It is important to choose how often migration should occur. Too frequent migrations will cause all islands to converge to the same solution, whereas too rare migrations mean there is little information exchange among the islands.
+\subsubsection*{Diffusion Model}
+Individuals are placed on a spatial structure (usually a toroidal grid), and selection, recombination and replacement are based on the local neighbourhood.
+\subsubsection*{Speciation}
+Individuals are recombined only with genotypically/phenotypically similar individuals. Extra genes are added to the problem representation to indicate the species. These species genes are subject to recombination and mutation and can be used as tags to perform fitness sharing.
+\subsubsection*{Fitness Sharing}
+The number of individuals within a niche is restricted by sharing their fitness to allocate individuals to niches in proportion to niche fitness. The niche size can be set in genotype or phenotype space.
+\subsubsection*{Crowding}
+Crowding attempts to distribute individuals evenly amongst niches by making similar individuals compete with each other for survival.
+\subsubsection*{Key Takeaway}
+Spatial distribution and island models help maintain diversity and explore multiple peaks in multimodal problems.
+
+\subsection*{Interactive Evolutionary Computation}
+Interactive EC is required when it is not possible to define an objective fitness function and subjective judgment is required.
+\subsubsection*{Generalities}
+This involves a human evaluator in the selection and variation processes and in the fitness evaluation. The user selects the individuals that will take part in reproduction.
+\subsubsection*{Key Takeaway}
+Interactive EC integrates human subjectivity, which allows for evolution in cases where objective fitness functions do not exist.
+
+\subsection*{Fitness-Free Evolutionary Algorithms}
+These algorithms abandon the goal of improving performance and instead focus on finding behaviourally different solutions.
+\subsubsection*{Motivation}
+Traditional methods are too focused on objectives, and greatness should not result from measuring improvement in the pursuit of a goal.
+\subsubsection*{Novelty Search (NS)}
+The algorithm keeps an archive of the most novel solutions found. It maximises behavioural novelty rather than fitness.
+\subsubsection*{MAP-Elites}
+This discretises an n-dimensional behavioural space and keeps the best individual in each bin of the grid. It is called an "illuminating algorithm" as it highlights the fitness potential of each region in the space.
+\subsubsection*{Quality Diversity (QD)}
+QD maximises the total fitness across all filled grid bins within the behavioural space.
+\subsubsection*{Key Takeaway}
+Fitness-free algorithms prioritize diversity and novelty, often outperforming traditional methods in complex tasks.
+
+\subsection*{Combining Machine and Reinforcement Learning with Evolutionary Computation}
+This is an area of ongoing research, exploring ways to combine reinforcement learning (RL) with EAs.
+\subsubsection*{RL-Powered EAs}
+RL can be used to learn a model of the problem, learn the best algorithm parameters, or learn the best algorithm operators to execute. This can be useful in problems where the function evaluations are computationally expensive.
+\subsubsection*{RL+EAs for Agent-Based Tasks}
+Hybrid schemes where agent controllers are partially evolved and partially learned are used, especially in cases with uncertain or missing rewards.
+\subsubsection*{The Triangle of Life}
+This concept, which is similar to what happens in nature, involves the phases of birth, infancy and maturity. In artificial agents, properties can be inherited from their parents (birth), they can learn during their lifetime (infancy), and eventually they can reproduce (maturity).
+\subsubsection*{Key Takeaway}
+Combining RL and EAs can leverage the strengths of both to solve problems that are beyond the capabilities of each approach alone.
+
+\section{Conclusion}
+Evolutionary computation techniques are widely used across various industries and research fields. By adapting these algorithms and combining them with other tools such as machine learning, these methods will become even more important in solving complex problems in the future.
+
+\newpage
+
+\thispagestyle{empty}
+\vspace*{\fill}
+\begin{center}
+    \textbf{\Huge Special Thanks}
+    \vspace{1cm}
+    
+    \Large
+    We would like to extend our heartfelt gratitude to all the individuals and organizations who have contributed to the success of this project. In particular, we would like to thank OpenAI's Whisper and GPT-4o, Google's NotebookLM and Microsoft's Copilot for their invaluable assistance in the creation of this document.
+\end{center}
+\vspace*{\fill}
+\newpage
+
+\end{document}
