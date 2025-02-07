@@ -40,4 +40,4 @@ To compile the LaTeX document, follow these steps:
 ## Authors
 
 - [lorenzoorsingher](https://www.github.com/lorenzoorsingher)
-- [GitHub repo](https://www.github.com/lorenzoorsingher/idk)
+- [GitHub repo](https://github.com/lorenzoorsingher/BIOAI_notes)
